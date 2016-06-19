@@ -135,8 +135,9 @@
             console.log("error", data)
           }
         } else {
-          if 
-          return data
+          if (JSON.stringify(data) !== JSON.stringify(this.data)) {
+            this.set("data", data)
+          }
         }
       },
       encode: function(theInput, size) {
