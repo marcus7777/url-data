@@ -1,0 +1,14 @@
+{
+  "name": "url-data",
+  "version": "1.0.0",
+  "description": "A way to send data through URL automatically eliminating repeating data",
+  "main": "url-data.html",
+  "keywords": [
+    "polymer",
+    "web-components"
+  ],
+  "dependencies": {
+    "polymer": "*"
+    "jsurl": "Sage/jsurl"
+  }
+}
