@@ -12,85 +12,45 @@
       var target = this
       return target.split(search).join(replacement)
     }
-    var chrList = "taoinsh.rdcumwfgypbvkjxqz"
-    chrList = "~!+" + chrList + chrList.toUpperCase() + "1234567890"
-    var trykeys = chrList.split("").reverse()
     var ai = trykeys.length
     var bi = trykeys.length
     var ci = trykeys.length
     
-    var LastKey = function(keys) {
-      var keyLength = keys.reduce(function(a, b) {
-        return a.length > b.length ? a : b;
-      }).length
-      if (keyLength === 3) {
-        for (; ai > -1; ai--) {
-          for (; bi > -1; bi--) {
-            for (; ci > -1; ci--) {
-              if (keys.indexOf(trykeys[ai] + trykeys[bi] + trykeys[ci]) !== -1) {
-                return trykeys[ai] + trykeys[bi] + trykeys[ci]
-              }
-            }
-            ci = trykeys.length
-          }
-          bi = trykeys.length
-        }
-        ai = trykeys.length
-      } else if (keyLength === 2) {
-        for (; ai > -1; ai--) {
-          for (; bi > -1; bi--) {
-            if (keys.indexOf(trykeys[ai] + trykeys[bi]) !== -1) {
-              return trykeys[ai] + trykeys[bi]
-            }
-          }
-          bi = trykeys.length
-        }
-        ai = trykeys.length
-      } else {
-        for (; ai > -1; ai--) {
-          if (keys.indexOf(trykeys[i]) !== -1) {
-            return trykeys[i]
-          }
-        }
-        ai = trykeys.length
-      }
-      return false
-    }
-    var ia = 0
-    var ib = 0
-    var ic = 0
+
+    
+    var keyIndex  = [0,0,0]
     var findAkey = function(text) {
-      if (ib === 0 && ic === 0) {
-        for (; ia < trykeys.length; ia++) {
-          if (text.indexOf(trykeys[ia]) === -1) {
-            return trykeys[ia]
+      if (keyIndex[1] === 0 && keyIndex[2] === 0) {
+        for (; keyIndex[0] < trykeys.length; keyIndex[0]++) {
+          if (text.indexOf(trykeys[keyIndex[0]]) === -1) {
+            return trykeys[keyIndex[0]]
           }
         }
-        ia = 0
+        keyIndex[0] = 0
       }
-      if (ic === 0) {
-        for (; ia < trykeys.length; ia++) {
-          for (; ib < trykeys.length; ib++) {
-            if (text.indexOf(trykeys[ia] + trykeys[ib]) === -1) {
-              return trykeys[ia] + trykeys[ib]
+      if (keyIndex[2] === 0) {
+        for (; keyIndex[0] < trykeys.length; keyIndex[0]++) {
+          for (; keyIndex[1] < trykeys.length; keyIndex[1]++) {
+            if (text.indexOf(trykeys[keyIndex[0]] + trykeys[keyIndex[1]]) === -1) {
+              return trykeys[keyIndex[0]] + trykeys[keyIndex[1]]
             }
           }
-          ib = 0
+          keyIndex[1] = 0
         }
-        ia = 0
+        keyIndex[0] = 0
       }
-      for (; ia < trykeys.length; ia++) {
-        for (; ib < trykeys.length; ib++) {
-          for (; ic < trykeys.length; ic++) {
-            if (text.indexOf(trykeys[ia] + trykeys[ib] + trykeys[ic]) === -1) {
-              return trykeys[ia] + trykeys[ib] + trykeys[ic]
+      for (; keyIndex[0] < trykeys.length; keyIndex[0]++) {
+        for (; keyIndex[1] < trykeys.length; keyIndex[1]++) {
+          for (; keyIndex[2] < trykeys.length; keyIndex[2]++) {
+            if (text.indexOf(trykeys[keyIndex[0]] + trykeys[keyIndex[1]] + trykeys[keyIndex[2]]) === -1) {
+              return trykeys[keyIndex[0]] + trykeys[keyIndex[1]] + trykeys[keyIndex[2]]
             }
           }
-          ic = 0
+          keyIndex[2] = 0
         }
-        ib = 0
+        keyIndex[1] = 0
       }
-      ia = 0
+      keyIndex[0] = 0
     }
     
     Polymer({
@@ -98,8 +58,62 @@
       properties: {
         data: {notify: true, type: Object},
         string: {notify: true, type: String},
+        letters: {type:String, value: "taoinsh.rdcumwfgypbvkjxqz"},
+        numbers: {type:String, value: "0126573489"},
+        _countUp: {type:Array, value: [0,0,0]},
+        _countDown: {type:Array, computed:"getIndexKey(_tryKeys)"},
+        _chrList: {computed: "getChrList(letters,numbers)"},
+        _tryKeys: {computed: "getTryKeys(_chrList)"},
         _dataFromString: {computed: "decode(string)"},
         _stringFromData: {computed: "encode(data)"}
+      },
+      LastKey: function(keys) {
+        var keyLength = keys.reduce(function(a, b) {
+          return a.length > b.length ? a : b;
+        }).length
+        if (keyLength === 3) {
+          for (; this._countDown[0] > -1; this._countDown[0]--) {
+            for (; this._countDown[1] > -1; this._countDown[1]--) {
+              for (; this._countDown[2] > -1; this._countDown[2]--) {
+                if (keys.indexOf(this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]] + this._tryKeys[this._countDown[2]]) !== -1) {
+                  return this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]] + this._tryKeys[this._countDown[2]]
+                }
+              }
+              this._countDown[2] = this._tryKeys.length
+            }
+            this._countDown[1] = this._tryKeys.length
+          }
+          this._countDown[0] = this._tryKeys.length
+        } else if (keyLength === 2) {
+          for (; this._countDown[0] > -1; this._countDown[0]--) {
+            for (; bi > -1; bi--) {
+              if (keys.indexOf(this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]]) !== -1) {
+                return this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]]
+              }
+            }
+            this._countDown[1] = this._tryKeys.length
+          }
+          this._countDown[0] = this._tryKeys.length
+        } else {
+          for (; this._countDown[0] > -1; this._countDown[0]--) {
+            if (keys.indexOf(this._tryKeys[this._countDown[0]]) !== -1) {
+              return this._tryKeys[this._countDown[0]]
+            }
+          }
+          this._countDown[0] = this._tryKeys.length
+        }
+        return false
+      },
+      getIndexKey: function(tryKeys) {
+        return [tryKeys.length, tryKeys.length, tryKeys.length]
+      },
+      getTryKeys: function(chrList) {
+        return chrList.split("").reverse()
+      },
+      getChrList: function(letters, numbers) {
+        chrList = letters
+        chrList = chrList + chrList.toUpperCase() + numbers
+        return chrList
       },
       decode: function(theInput) {
         try { // the new way
