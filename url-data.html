@@ -12,45 +12,38 @@
       var target = this
       return target.split(search).join(replacement)
     }
-    var ai = trykeys.length
-    var bi = trykeys.length
-    var ci = trykeys.length
-    
-
-    
-    var keyIndex  = [0,0,0]
     var findAkey = function(text) {
-      if (keyIndex[1] === 0 && keyIndex[2] === 0) {
-        for (; keyIndex[0] < trykeys.length; keyIndex[0]++) {
-          if (text.indexOf(trykeys[keyIndex[0]]) === -1) {
-            return trykeys[keyIndex[0]]
+      if (this.countUp[1] === 0 && this.countUp[2] === 0) {
+        for (; this.countUp[0] < this._tryKeys.length; this.countUp[0]++) {
+          if (text.indexOf(this._tryKeys[this.countUp[0]]) === -1) {
+            return this._tryKeys[this.countUp[0]]
           }
         }
-        keyIndex[0] = 0
+        this.countUp[0] = 0
       }
-      if (keyIndex[2] === 0) {
-        for (; keyIndex[0] < trykeys.length; keyIndex[0]++) {
-          for (; keyIndex[1] < trykeys.length; keyIndex[1]++) {
-            if (text.indexOf(trykeys[keyIndex[0]] + trykeys[keyIndex[1]]) === -1) {
-              return trykeys[keyIndex[0]] + trykeys[keyIndex[1]]
+      if (this.countUp[2] === 0) {
+        for (; this.countUp[0] < this._tryKeys.length; this.countUp[0]++) {
+          for (; this.countUp[1] < this._tryKeys.length; this.countUp[1]++) {
+            if (text.indexOf(this._tryKeys[this.countUp[0]] + this._tryKeys[this.countUp[1]]) === -1) {
+              return this._tryKeys[this.countUp[0]] + this._tryKeys[this.countUp[1]]
             }
           }
-          keyIndex[1] = 0
+          this.countUp[1] = 0
         }
-        keyIndex[0] = 0
+        this.countUp[0] = 0
       }
-      for (; keyIndex[0] < trykeys.length; keyIndex[0]++) {
-        for (; keyIndex[1] < trykeys.length; keyIndex[1]++) {
-          for (; keyIndex[2] < trykeys.length; keyIndex[2]++) {
-            if (text.indexOf(trykeys[keyIndex[0]] + trykeys[keyIndex[1]] + trykeys[keyIndex[2]]) === -1) {
-              return trykeys[keyIndex[0]] + trykeys[keyIndex[1]] + trykeys[keyIndex[2]]
+      for (; this.countUp[0] < this._tryKeys.length; this.countUp[0]++) {
+        for (; this.countUp[1] < this._tryKeys.length; this.countUp[1]++) {
+          for (; this.countUp[2] < this._tryKeys.length; this.countUp[2]++) {
+            if (text.indexOf(this._tryKeys[this.countUp[0]] + this._tryKeys[this.countUp[1]] + this._tryKeys[this.countUp[2]]) === -1) {
+              return this._tryKeys[this.countUp[0]] + this._tryKeys[this.countUp[1]] + this._tryKeys[this.countUp[2]]
             }
           }
-          keyIndex[2] = 0
+          this.countUp[2] = 0
         }
-        keyIndex[1] = 0
+        this.countUp[1] = 0
       }
-      keyIndex[0] = 0
+      this.countUp[0] = 0
     }
     
     Polymer({
@@ -104,16 +97,14 @@
         }
         return false
       },
-      getIndexKey: function(tryKeys) {
-        return [tryKeys.length, tryKeys.length, tryKeys.length]
+      getIndexKey: function(this._tryKeys) {
+        return [this._tryKeys.length, this._tryKeys.length, this._tryKeys.length]
       },
       getTryKeys: function(chrList) {
         return chrList.split("").reverse()
       },
       getChrList: function(letters, numbers) {
-        chrList = letters
-        chrList = chrList + chrList.toUpperCase() + numbers
-        return chrList
+        return letters + letters.toUpperCase() + numbers
       },
       decode: function(theInput) {
         try { // the new way
