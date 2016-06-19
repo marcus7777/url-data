@@ -50,28 +50,41 @@
       }
       return false
     }
+    var ia = 0
+    var ib = 0
+    var ic = 0
     var findAkey = function(text) {
-      for (var i = 0; i < trykeys.length; i++) {
-        if (text.indexOf(trykeys[i]) === -1) {
-          return trykeys[i]
-        }
-      }
-      for (var ia = 0; ia < trykeys.length; ia++) {
-        for (var ib = 0; ib < trykeys.length; ib++) {
-          if (text.indexOf(trykeys[ia] + trykeys[ib]) === -1) {
-            return trykeys[ia] + trykeys[ib]
+      if (ib === 0 && ic === 0) {
+        for (; ia < trykeys.length; ia++) {
+          if (text.indexOf(trykeys[ia]) === -1) {
+            return trykeys[ia]
           }
         }
+        ia = 0
       }
-      for (var ia = 0; ia < trykeys.length; ia++) {
-        for (var ib = 0; ib < trykeys.length; ib++) {
-          for (var ic = 0; ic < trykeys.length; ic++) {
+      if (ic === 0) {
+        for (; ia < trykeys.length; ia++) {
+          for (; ib < trykeys.length; ib++) {
+            if (text.indexOf(trykeys[ia] + trykeys[ib]) === -1) {
+              return trykeys[ia] + trykeys[ib]
+            }
+          }
+          ib = 0
+        }
+        ia = 0
+      }
+      for (; ia < trykeys.length; ia++) {
+        for (; ib < trykeys.length; ib++) {
+          for (; ic < trykeys.length; ic++) {
             if (text.indexOf(trykeys[ia] + trykeys[ib] + trykeys[ic]) === -1) {
               return trykeys[ia] + trykeys[ib] + trykeys[ic]
             }
           }
+          ic = 0
         }
+        ib = 0
       }
+      ia = 0
     }
     
     Polymer({
