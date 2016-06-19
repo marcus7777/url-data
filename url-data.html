@@ -19,34 +19,44 @@
     var chrList = "taoinsh.rdcumwfgypbvkjxqz"
     chrList = "~!+" + chrList + chrList.toUpperCase() + "1234567890"
     var trykeys = chrList.split("").reverse()
+    var ai = trykeys.length
+    var bi = trykeys.length
+    var ci = trykeys.length
+    
     var LastKey = function(keys) {
       var keyLength = keys.reduce(function(a, b) {
         return a.length > b.length ? a : b;
       }).length
       if (keyLength === 3) {
-        for (var ia = trykeys.length; ia > -1; ia--) {
-          for (var ib = trykeys.length; ib > -1; ib--) {
-            for (var ic = trykeys.length; ic > -1; ic--) {
-              if (keys.indexOf(trykeys[ia] + trykeys[ib] + trykeys[ic]) !== -1) {
-                return trykeys[ia] + trykeys[ib] + trykeys[ic]
+        for (; ai > -1; ai--) {
+          for (; bi > -1; bi--) {
+            for (; ci > -1; ci--) {
+              if (keys.indexOf(trykeys[ai] + trykeys[bi] + trykeys[ci]) !== -1) {
+                return trykeys[ai] + trykeys[bi] + trykeys[ci]
               }
             }
+            ci = trykeys.length
           }
+          bi = trykeys.length
         }
+        ai = trykeys.length
       } else if (keyLength === 2) {
-        for (var ia = trykeys.length; ia > -1; ia--) {
-          for (var ib = trykeys.length; ib > -1; ib--) {
-            if (keys.indexOf(trykeys[ia] + trykeys[ib]) !== -1) {
-              return trykeys[ia] + trykeys[ib]
+        for (; ai > -1; ai--) {
+          for (; bi > -1; bi--) {
+            if (keys.indexOf(trykeys[ai] + trykeys[bi]) !== -1) {
+              return trykeys[ai] + trykeys[bi]
             }
           }
+          bi = trykeys.length
         }
+        ai = trykeys.length
       } else {
-        for (var i = trykeys.length; i > -1; i--) {
+        for (; ai > -1; ai--) {
           if (keys.indexOf(trykeys[i]) !== -1) {
             return trykeys[i]
           }
         }
+        ai = trykeys.length
       }
       return false
     }
