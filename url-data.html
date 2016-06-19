@@ -52,7 +52,7 @@
       }
       this.countUp[0] = 0
     },
-    LastKey: function(keys) {
+    lastKey: function(keys) {
       var keyLength = keys.reduce(function(a, b) {
         return a.length > b.length ? a : b;
       }).length
@@ -106,7 +106,7 @@
       }
       if (data.e) {
         do {
-          theLastKey = LastKey(Object.keys(data))
+          theLastKey = this.lastKey(Object.keys(data))
           if (theLastKey) {
             data.e = data.e.split(theLastKey).join(data[theLastKey])
             delete(data[theLastKey])
