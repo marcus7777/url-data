@@ -8,7 +8,7 @@
     "web-components"
   ],
   "dependencies": {
-    "polymer": "*"
+    "polymer": "*",
     "jsurl": "Sage/jsurl"
   }
 }
