@@ -1,18 +1,25 @@
 <link rel="import" href="../polymer/polymer.html">
 <script src="../jsurl/lib/jsurl.js" type="application/javascript"></script>
 <script>
-
 /*
  * `<url-data></url-data>` A way to send data through URL automatically eliminating repeating data
  * @demo demo.html
  */
-
-  ;(function () {
-    String.prototype.replaceAll = function(search, replacement) {
-      var target = this
-      return target.split(search).join(replacement)
-    }
-    var findAkey = function(text) {
+  Polymer({
+    is: "url-data",
+    properties: {
+      data: {notify: true, type: Object},
+      string: {notify: true, type: String},
+      letters: {type:String, value: "taoinsh.rdcumwfgypbvkjxqz"},
+      numbers: {type:String, value: "0126573489"},
+      _countUp: {type:Array, value: [0,0,0]},
+      _countDown: {type:Array, computed:"getIndexKey(_tryKeys)"},
+      _chrList: {computed: "getChrList(letters,numbers)"},
+      _tryKeys: {computed: "getTryKeys(_chrList)"},
+      _dataFromString: {computed: "decode(string)"},
+      _stringFromData: {computed: "encode(data)"}
+    },
+    findAkey: function(text) {
       if (this.countUp[1] === 0 && this.countUp[2] === 0) {
         for (; this.countUp[0] < this._tryKeys.length; this.countUp[0]++) {
           if (text.indexOf(this._tryKeys[this.countUp[0]]) === -1) {
@@ -44,158 +51,139 @@
         this.countUp[1] = 0
       }
       this.countUp[0] = 0
-    }
-    
-    Polymer({
-      is: "url-data",
-      properties: {
-        data: {notify: true, type: Object},
-        string: {notify: true, type: String},
-        letters: {type:String, value: "taoinsh.rdcumwfgypbvkjxqz"},
-        numbers: {type:String, value: "0126573489"},
-        _countUp: {type:Array, value: [0,0,0]},
-        _countDown: {type:Array, computed:"getIndexKey(_tryKeys)"},
-        _chrList: {computed: "getChrList(letters,numbers)"},
-        _tryKeys: {computed: "getTryKeys(_chrList)"},
-        _dataFromString: {computed: "decode(string)"},
-        _stringFromData: {computed: "encode(data)"}
-      },
-      LastKey: function(keys) {
-        var keyLength = keys.reduce(function(a, b) {
-          return a.length > b.length ? a : b;
-        }).length
-        if (keyLength === 3) {
-          for (; this._countDown[0] > -1; this._countDown[0]--) {
-            for (; this._countDown[1] > -1; this._countDown[1]--) {
-              for (; this._countDown[2] > -1; this._countDown[2]--) {
-                if (keys.indexOf(this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]] + this._tryKeys[this._countDown[2]]) !== -1) {
-                  return this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]] + this._tryKeys[this._countDown[2]]
-                }
-              }
-              this._countDown[2] = this._tryKeys.length
-            }
-            this._countDown[1] = this._tryKeys.length
-          }
-          this._countDown[0] = this._tryKeys.length
-        } else if (keyLength === 2) {
-          for (; this._countDown[0] > -1; this._countDown[0]--) {
-            for (; bi > -1; bi--) {
-              if (keys.indexOf(this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]]) !== -1) {
-                return this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]]
+    },
+    LastKey: function(keys) {
+      var keyLength = keys.reduce(function(a, b) {
+        return a.length > b.length ? a : b;
+      }).length
+      if (keyLength === 3) {
+        for (; this._countDown[0] > -1; this._countDown[0]--) {
+          for (; this._countDown[1] > -1; this._countDown[1]--) {
+            for (; this._countDown[2] > -1; this._countDown[2]--) {
+              if (keys.indexOf(this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]] + this._tryKeys[this._countDown[2]]) !== -1) {
+                return this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]] + this._tryKeys[this._countDown[2]]
               }
             }
-            this._countDown[1] = this._tryKeys.length
+            this._countDown[2] = this._tryKeys.length
           }
-          this._countDown[0] = this._tryKeys.length
+          this._countDown[1] = this._tryKeys.length
+        }
+        this._countDown[0] = this._tryKeys.length
+      } else if (keyLength === 2) {
+        for (; this._countDown[0] > -1; this._countDown[0]--) {
+          for (; bi > -1; bi--) {
+            if (keys.indexOf(this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]]) !== -1) {
+              return this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]]
+            }
+          }
+          this._countDown[1] = this._tryKeys.length
+        }
+        this._countDown[0] = this._tryKeys.length
+      } else {
+        for (; this._countDown[0] > -1; this._countDown[0]--) {
+          if (keys.indexOf(this._tryKeys[this._countDown[0]]) !== -1) {
+            return this._tryKeys[this._countDown[0]]
+          }
+        }
+        this._countDown[0] = this._tryKeys.length
+      }
+      return false
+    },
+    getIndexKey: function(this._tryKeys) {
+      return [this._tryKeys.length, this._tryKeys.length, this._tryKeys.length]
+    },
+    getTryKeys: function(chrList) {
+      return chrList.split("").reverse()
+    },
+    getChrList: function(letters, numbers) {
+      return letters + letters.toUpperCase() + numbers
+    },
+    decode: function(theInput) {
+      try { // the new way
+        data = JSURL.parse(theInput)
+      } catch (e) { // try the old way
+        data = JSON.parse(decodeURIComponent(theInput)) 
+      }
+      if (data.e) {
+        do {
+          theLastKey = LastKey(Object.keys(data))
+          if (theLastKey) {
+            data.e = data.e.split(theLastKey).join(data[theLastKey])
+            delete(data[theLastKey])
+          }
+        } while (theLastKey)
+        if (Object.keys(data).length === 1) {
+          try {
+            output = JSON.parse(data.e)
+          } catch (e) {
+            return data.e
+          }
+          return output
         } else {
-          for (; this._countDown[0] > -1; this._countDown[0]--) {
-            if (keys.indexOf(this._tryKeys[this._countDown[0]]) !== -1) {
-              return this._tryKeys[this._countDown[0]]
-            }
-          }
-          this._countDown[0] = this._tryKeys.length
+          console.log("error", data)
         }
-        return false
-      },
-      getIndexKey: function(this._tryKeys) {
-        return [this._tryKeys.length, this._tryKeys.length, this._tryKeys.length]
-      },
-      getTryKeys: function(chrList) {
-        return chrList.split("").reverse()
-      },
-      getChrList: function(letters, numbers) {
-        return letters + letters.toUpperCase() + numbers
-      },
-      decode: function(theInput) {
-        try { // the new way
-          data = JSURL.parse(theInput)
-        } catch (e) { // try the old way
-          data = JSON.parse(decodeURIComponent(theInput)) 
+      } else {
+        if (JSON.stringify(data) !== JSON.stringify(this.data)) {
+          this.set("data", data)
         }
-        if (data.e) {
-          do {
-            theLastKey = LastKey(Object.keys(data))
-            if (theLastKey) {
-              data.e = data.e.replaceAll(theLastKey, data[theLastKey])
-              delete(data[theLastKey])
-            }
-          } while (theLastKey)
-
-          if (Object.keys(data).length === 1) {
-            try {
-              output = JSON.parse(data.e)
-            } catch (e) {
-              return data.e
-            }
-            return output
-          } else {
-            console.log("error", data)
-          }
+        return data
+      }
+    },
+    encode: function(theInput, size) {
+      if (JSON.stringify(theInput) !== JSON.stringify(this.data)) {
+        if (!size) {
+          size = JSURL.stringify(theInput).length
+        }
+        if (typeof theInput === "string") {
+          var input = "" + theInput
+          var output = {e: theInput}
         } else {
-          if (JSON.stringify(data) !== JSON.stringify(this.data)) {
-            this.set("data", data)
+          if (theInput.e) {
+            var input = "" + theInput.e
+            var output = JSON.parse(JSON.stringify(theInput))
+          } else {
+            var input = JSON.stringify(theInput)
+            var output = {e:JSON.stringify(theInput)}
           }
-          return data
         }
-      },
-      encode: function(theInput, size) {
-        if (JSON.stringify(theInput) !== JSON.stringify(this.data)) {
-          if (!size) {
-            size = JSURL.stringify(theInput).length
+        if (size < 50) { 
+          return JSURL.stringify(output) // No need to reduce
+        } else if (size < 1000) { 
+          var reg = /(?=((..+)(?:.*?\2)+))/g; // .. 2 char min
+        } else if (size < 5000) {
+          var reg = /(?=((...+)(?:.*?\2)+))/g; // ... 3 char min
+        } else {
+          var reg = /(?=((....+)(?:.*?\2)+))/g; // .... 4 char min
+        }
+        var sub = "" //somewhere to stick temp results
+        var maxstr = "" // our maximum length repeated string
+        var maxSaving = 2
+        var key = findAkey(input)
+        reg.lastIndex = 0
+        sub = reg.exec(input); // find the first repeated string
+        while (!(sub == null)) {
+          var saving = input.length - ("{" + key + "}:'" + sub[2] + "'," + input.split(sub[2]).join(data[key])).length
+          if (saving > maxSaving) {
+            maxSaving = +saving
+            maxstr = sub[2]
           }
-          if (typeof theInput === "string") {
-            var input = "" + theInput
-            var output = {e: theInput}
-          } else {
-            if (theInput.e) {
-              var input = "" + theInput.e
-              var output = JSON.parse(JSON.stringify(theInput))
-            } else {
-              var input = JSON.stringify(theInput)
-              var output = {e:JSON.stringify(theInput)}
-            }
+          sub = reg.exec(input)
+          reg.lastIndex++; // start searching from the next position
+        }
+        if (key && maxstr) {
+          output[key] = maxstr
+          output.e = input.split(maxstr).join(key)
+        }
+        if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length) {
+          return this.encode(output, size)
+        } else {
+          if (output !== this.string) {
+            this.set("string", JSURL.stringify(output))
           }
-
-          if (size < 50) { 
-            return JSURL.stringify(output) // No need to reduce
-          } else if (size < 1000) { 
-            var reg = /(?=((..+)(?:.*?\2)+))/g; // .. 2 char min
-          } else if (size < 5000) {
-            var reg = /(?=((...+)(?:.*?\2)+))/g; // ... 3 char min
-          } else {
-            var reg = /(?=((....+)(?:.*?\2)+))/g; // .... 4 char min
-          }
-
-          var sub = "" //somewhere to stick temp results
-          var maxstr = "" // our maximum length repeated string
-          var maxSaving = 2
-  
-          var key = findAkey(input)
-          reg.lastIndex = 0
-          sub = reg.exec(input); // find the first repeated string
-          while (!(sub == null)) {
-            var saving = input.length - ("{" + key + "}:'" + sub[2] + "'," + input.replaceAll(sub[2], key)).length
-            if (saving > maxSaving) {
-              maxSaving = +saving
-              maxstr = sub[2]
-            }
-            sub = reg.exec(input)
-            reg.lastIndex++; // start searching from the next position
-          }
-          if (key && maxstr) {
-            output[key] = maxstr
-            output.e = input.replaceAll(maxstr, key)
-          }
-          if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length) {
-            return this.encode(output, size)
-          } else {
-            if (output !== this.string) {
-              this.set("string", JSURL.stringify(output))
-            }
-            return output
-          }
+          return output
         }
       }
-    })
+    }
   })
+})
 </script>
