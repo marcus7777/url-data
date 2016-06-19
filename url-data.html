@@ -100,14 +100,10 @@
     Polymer({
       is: "url-data",
       properties: {
-        data: {notify: true},
-        string: {notify: true},
-        _dataFromString: {
-          computed: "decode(string)" 
-        },
-        _stringFromData: {
-          computed: "encode(data)"
-        }
+        data: {notify: true, type: Object},
+        string: {notify: true, type: String},
+        _dataFromString: {computed: "decode(string)"},
+        _stringFromData: {computed: "encode(data)"}
       },
       decode: function(theInput) {
         try { // the new way
@@ -138,6 +134,7 @@
           if (JSON.stringify(data) !== JSON.stringify(this.data)) {
             this.set("data", data)
           }
+          return data
         }
       },
       encode: function(theInput, size) {
@@ -194,6 +191,7 @@
             if (output !== this.string) {
               this.set("string", JSURL.stringify(output))
             }
+            return output
           }
         }
       }
