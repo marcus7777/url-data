@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <title>url-data</title>
+    <script src="../../webcomponentsjs/webcomponents.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../test-fixture/test-fixture-mocha.js"></script>
+    <script src="../../iron-test-helpers/mock-interactions.js"></script>
+    <link rel="import" href="../../polymer/polymer.html">
+    <link rel="import" href="../../test-fixture/test-fixture.html">
+    <link rel="import" href="../url-data.html">
+  </head>
+  <body>
+    <test-fixture id="urlData">
+      <template>
+        <url-data></url-data>
+      </template>
+    </test-fixture>
+    <script>
+      suite('<url-data>', function () {
+        var urlData
+        setup(function () {
+          urlData = fixture('urlData')
+        })
+        suite('basic usage', function () {
+          test('decode string', function(done) {
+            urlData.string = "~(e~'*7b*22data*22*3a*220173633234Z3133Z33884Z72344Z73654Z65444Z22344Z113498*22*7d~Z~'4*2c01736)"
+            if (urlData.data.data === "01736332344,0173631334,01736338844,01736723444,01736736544,01736654444,01736223444,01736113498") {
+              done()
+            }
+          })
+          test('make string', function(done) {
+            urlData.addEventListener('click', function() {
+              done()
+            })
+            MockInteractions.tap(urlData)
+          })
+        })
+      })
+    </script>
+  </body>
+</html>
