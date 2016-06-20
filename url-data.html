@@ -165,7 +165,7 @@
         var sub = "" //somewhere to stick temp results
         var maxstr = "" // our maximum length repeated string
         var maxSaving = 2
-        var key = findAkey(input)
+        var key = this.findAkey(input)
         reg.lastIndex = 0
         sub = reg.exec(input); // find the first repeated string
         while (!(sub == null)) {
