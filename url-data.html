@@ -71,7 +71,7 @@
         this._countDown[0] = this._tryKeys.length
       } else if (keyLength === 2) {
         for (; this._countDown[0] > -1; this._countDown[0]--) {
-          for (; bi > -1; bi--) {
+          for (; this._countDown[1] > -1; this._countDown[1]--) {
             if (keys.indexOf(this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]]) !== -1) {
               return this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]]
             }
