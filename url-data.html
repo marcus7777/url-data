@@ -177,7 +177,7 @@
         if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length) {
           return this.encode(output, size)
         } else {
-          if (output !== this.string) {
+          if (JSURL.stringify(output) !== this.string) {
             this.set("string", JSURL.stringify(output))
           }
           return output
