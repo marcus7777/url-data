@@ -16,8 +16,8 @@
       _countDown: {type:Array, computed:"getIndexKey(_tryKeys)"},
       _chrList: {computed: "getChrList(letters,numbers)"},
       _tryKeys: {computed: "getTryKeys(_chrList)"},
-      _dataFromString: {computed: "decode(string)"},
-      _stringFromData: {computed: "encode(data)"}
+      dataFromString: {computed: "decode(string)"},
+      stringFromData: {computed: "encode(data)"}
     },
     findAkey: function(text) {
       if (this.countUp[1] === 0 && this.countUp[2] === 0) {
