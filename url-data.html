@@ -99,34 +99,38 @@
       return letters + letters.toUpperCase() + numbers
     },
     decode: function(theInput) {
-      try { // the new way
-        data = JSURL.parse(theInput)
-      } catch (e) { // try the old way
-        data = JSON.parse(decodeURIComponent(theInput)) 
-      }
-      if (data.e) {
-        do {
-          theLastKey = this.lastKey(Object.keys(data))
-          if (theLastKey) {
-            data.e = data.e.split(theLastKey).join(data[theLastKey])
-            delete(data[theLastKey])
+      if (theInput) {
+        try { // the new way
+          data = JSURL.parse(theInput)
+        } catch (e) { // try the old way
+          data = JSON.parse(decodeURIComponent(theInput)) 
+        }
+        if (data.e) {
+          do {
+            theLastKey = this.lastKey(Object.keys(data))
+            if (theLastKey) {
+              data.e = data.e.split(theLastKey).join(data[theLastKey])
+              delete(data[theLastKey])
+            }
+          } while (theLastKey)
+          if (Object.keys(data).length === 1) {
+            try {
+              output = JSON.parse(data.e)
+            } catch (e) {
+              return data.e
+            }
+            return output
+          } else {
+            console.log("error", data)
           }
-        } while (theLastKey)
-        if (Object.keys(data).length === 1) {
-          try {
-            output = JSON.parse(data.e)
-          } catch (e) {
-            return data.e
-          }
-          return output
         } else {
-          console.log("error", data)
+          if (JSON.stringify(data) !== JSON.stringify(this.data)) {
+            this.set("data", data)
+          }
+          return data
         }
       } else {
-        if (JSON.stringify(data) !== JSON.stringify(this.data)) {
-          this.set("data", data)
-        }
-        return data
+        return
       }
     },
     encode: function(theInput, size) {
