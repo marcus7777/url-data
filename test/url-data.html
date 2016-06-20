@@ -23,16 +23,16 @@
           urlData = fixture('urlData')
         })
         suite('Decode', function () {
-          urlData.string = "~(e~'*7b*22data*22*3a*220173633234Z3133Z33884Z72344Z73654Z65444Z22344Z113498*22*7d~Z~'4*2c01736)"
           test('Decode string', function(done) {
+            urlData.string = "~(e~'*7b*22data*22*3a*220173633234Z3133Z33884Z72344Z73654Z65444Z22344Z113498*22*7d~Z~'4*2c01736)"
             if (urlData.data.data === "01736332344,0173631334,01736338844,01736723444,01736736544,01736654444,01736223444,01736113498") {
               done()
             }
           })
         })
         suite('Encode', function () {
-          urlData.data = {testing:"123"}
           test('Encode Obj', function(done) {
+            urlData.data = {testing:"123"}
             if (urlData.string === "~(e~'*7b*22testing*22*3a*22123*22*7d)") {
               done()
             }
