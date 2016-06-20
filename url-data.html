@@ -20,37 +20,37 @@
       stringFromData: {computed: "encode(data)"}
     },
     findAkey: function(text) {
-      if (this.countUp[1] === 0 && this.countUp[2] === 0) {
-        for (; this.countUp[0] < this._tryKeys.length; this.countUp[0]++) {
-          if (text.indexOf(this._tryKeys[this.countUp[0]]) === -1) {
-            return this._tryKeys[this.countUp[0]]
+      if (this._countUp[1] === 0 && this._countUp[2] === 0) {
+        for (; this._countUp[0] < this._tryKeys.length; this._countUp[0]++) {
+          if (text.indexOf(this._tryKeys[this._countUp[0]]) === -1) {
+            return this._tryKeys[this._countUp[0]]
           }
         }
-        this.countUp[0] = 0
+        this._countUp[0] = 0
       }
-      if (this.countUp[2] === 0) {
-        for (; this.countUp[0] < this._tryKeys.length; this.countUp[0]++) {
-          for (; this.countUp[1] < this._tryKeys.length; this.countUp[1]++) {
-            if (text.indexOf(this._tryKeys[this.countUp[0]] + this._tryKeys[this.countUp[1]]) === -1) {
-              return this._tryKeys[this.countUp[0]] + this._tryKeys[this.countUp[1]]
+      if (this._countUp[2] === 0) {
+        for (; this._countUp[0] < this._tryKeys.length; this._countUp[0]++) {
+          for (; this._countUp[1] < this._tryKeys.length; this._countUp[1]++) {
+            if (text.indexOf(this._tryKeys[this._countUp[0]] + this._tryKeys[this._countUp[1]]) === -1) {
+              return this._tryKeys[this._countUp[0]] + this._tryKeys[this._countUp[1]]
             }
           }
-          this.countUp[1] = 0
+          this._countUp[1] = 0
         }
-        this.countUp[0] = 0
+        this._countUp[0] = 0
       }
-      for (; this.countUp[0] < this._tryKeys.length; this.countUp[0]++) {
-        for (; this.countUp[1] < this._tryKeys.length; this.countUp[1]++) {
-          for (; this.countUp[2] < this._tryKeys.length; this.countUp[2]++) {
-            if (text.indexOf(this._tryKeys[this.countUp[0]] + this._tryKeys[this.countUp[1]] + this._tryKeys[this.countUp[2]]) === -1) {
-              return this._tryKeys[this.countUp[0]] + this._tryKeys[this.countUp[1]] + this._tryKeys[this.countUp[2]]
+      for (; this._countUp[0] < this._tryKeys.length; this._countUp[0]++) {
+        for (; this._countUp[1] < this._tryKeys.length; this._countUp[1]++) {
+          for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
+            if (text.indexOf(this._tryKeys[this._countUp[0]] + this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]) === -1) {
+              return this._tryKeys[this._countUp[0]] + this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]
             }
           }
-          this.countUp[2] = 0
+          this._countUp[2] = 0
         }
-        this.countUp[1] = 0
+        this._countUp[1] = 0
       }
-      this.countUp[0] = 0
+      this._countUp[0] = 0
     },
     lastKey: function(keys) {
       var keyLength = keys.reduce(function(a, b) {
