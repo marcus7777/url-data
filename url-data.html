@@ -151,10 +151,10 @@
           }
         }
         if (size < 50) { 
-          if (JSURL.stringify(output) !== this.string) {
-            this.set("string", JSURL.stringify(output))
+          if (JSURL.stringify(theInput) !== this.string) {
+            this.set("string", JSURL.stringify(theInput))
           }
-          return JSURL.stringify(output) // No need to reduce
+          return JSURL.stringify(theInput) // No need to reduce
         } else if (size < 1000) { 
           var reg = /(?=((..+)(?:.*?\2)+))/g; // .. 2 char min
         } else if (size < 5000) {
