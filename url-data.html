@@ -130,7 +130,7 @@
       }
     },
     encode: function(theInput, size) {
-      if (JSON.stringify(theInput) !== JSON.stringify(this.data)) {
+      if (JSON.stringify(theInput) !== JSON.stringify(this.decode(this.string))) {
         if (!size) {
           size = JSURL.stringify(theInput).length
         }
