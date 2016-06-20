@@ -13,7 +13,6 @@
       letters: {type:String, value: "taoinsh.rdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0126573489"},
       _countUp: {type:Array, value: [0,0,0]},
-      _countDown: {type:Array, computed:"getIndexKey(_tryKeys)"},
       _chrList: {computed: "getChrList(letters,numbers)"},
       _tryKeys: {computed: "getTryKeys(_chrList)"},
       dataFromString: {computed: "decode(string)"},
