@@ -79,6 +79,7 @@
         }
         this._countDown[0] = this._tryKeys.length
       } else {
+        this._countDown[0] = this._tryKeys.length 
         for (; this._countDown[0] > -1; this._countDown[0]--) {
           if (keys.indexOf(this._tryKeys[this._countDown[0]]) !== -1) {
             return this._tryKeys[this._countDown[0]]
