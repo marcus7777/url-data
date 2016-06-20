@@ -33,7 +33,7 @@
         suite('Encode', function () {
           test('Encode Obj', function(done) {
             urlData.set("data", {testing:"123"})
-            if (urlData.stringFromData === "~(e~'*7b*22testing*22*3a*22123*22*7d)") { // ~'testing...
+            if (urlData.stringFromData === "~(testing~'123)") {
               done()
             }
           })
