@@ -180,7 +180,7 @@
           if (JSURL.stringify(output) !== this.string) {
             this.set("string", JSURL.stringify(output))
           }
-          return output
+          return JSURL.stringify(output)
         }
       }
     }
