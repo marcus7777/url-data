@@ -147,6 +147,9 @@
           }
         }
         if (size < 50) { 
+          if (JSURL.stringify(output) !== this.string) {
+            this.set("string", JSURL.stringify(output))
+          }
           return JSURL.stringify(output) // No need to reduce
         } else if (size < 1000) { 
           var reg = /(?=((..+)(?:.*?\2)+))/g; // .. 2 char min
