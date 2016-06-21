@@ -171,7 +171,7 @@
         reg.lastIndex = 0
         sub = reg.exec(input); // find the first repeated string
         while (!(sub == null)) {
-          var saving = input.length - ("{" + key + "}:'" + sub[2] + "'," + input.split(sub[2]).join(data[key])).length
+          var saving = input.length - ("{" + key + "}:'" + sub[2] + "'," + input.split(sub[2]).join(key)).length
           if (saving > maxSaving) {
             maxSaving = +saving
             maxstr = sub[2]
