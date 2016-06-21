@@ -23,14 +23,14 @@
           urlData = fixture('urlData')
         })
         suite('Decode', function () {
-          test('Decode string', function(done) {
+          test('Decode string for a Object', function(done) {
             urlData.set("string", "~(e~'*7b*22data*22*3a*220173633234Z3133Z33884Z72344Z73654Z65444Z22344Z113498*22*7d~Z~'4*2c01736)")
             if (urlData.dataFromString.data === "01736332344,0173631334,01736338844,01736723444,01736736544,01736654444,01736223444,01736113498") {
               done()
             }
           })
           
-          test('Decode string for Array', function(done) {
+          test('Decode string for a Array', function(done) {
             urlData.set("string", "~(9~'*2c*22marcus*22~e~'*5b*22marcus*2299999999*5d)")
             if (urlData.dataFromString.length === 9) {
               done()
