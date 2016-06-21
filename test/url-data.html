@@ -32,7 +32,7 @@
           
           test('Decode string for Array', function(done) {
             urlData.set("string", "~(9~'*2c*22marcus*22~e~'*5b*22marcus*2299999999*5d)")
-            if (urlData.dataFromString.length === 13) {
+            if (urlData.dataFromString.length === 9) {
               done()
             } else {
               done(urlData.dataFromString.length)
