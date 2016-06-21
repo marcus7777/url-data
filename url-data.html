@@ -8,7 +8,7 @@
   Polymer({
     is: "url-data",
     properties: {
-      data: {notify: true, type: Object},
+      data: {notify: true},
       string: {notify: true, type: String},
       letters: {type:String, value: "taoinsh.rdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0123456789"},
@@ -104,6 +104,7 @@
     },
     decode: function(theInput) {
       if (theInput) {
+        var theOutput
         this._countDown = this.getIndexKey(this._tryKeys) // reset count down
         try { // the new way
           data = JSURL.parse(theInput)
@@ -120,11 +121,11 @@
           } while (theLastKey)
           if (Object.keys(data).length === 1) {
             try {
-              output = JSON.parse(data.e)
+              theOutput = JSON.parse(data.e)
             } catch (e) {
               return data.e
             }
-            return output
+            return theOutput
           } else {
             console.log("error", data)
           }
