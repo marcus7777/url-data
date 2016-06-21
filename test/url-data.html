@@ -29,6 +29,13 @@
               done()
             }
           })
+          
+          test('Decode string for Array', function(done) {
+            urlData.set("string", "~(9~'*27marcus*27*2c~e~'*5b99999999999*5d)")
+            if (urlData.dataFromString.length === 13) {
+              done()
+            }
+          })
         })
         suite('Encode', function () {
           test('Encode Small', function(done) {
