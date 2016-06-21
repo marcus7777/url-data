@@ -31,9 +31,11 @@
           })
           
           test('Decode string for Array', function(done) {
-            urlData.set("string", "~(9~'*27marcus*27*2c~e~'*5b99999999999*5d)")
+            urlData.set("string", "~(9~'*2c*22marcus*22~e~'*5b*22marcus*2299999999*5d)")
             if (urlData.dataFromString.length === 13) {
               done()
+            } else {
+              done(urlData.dataFromString.length)
             }
           })
         })
