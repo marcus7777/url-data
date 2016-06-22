@@ -167,6 +167,8 @@
           }
           return JSURL.stringify(theInput) // No need to reduce
         } else if (size < 1000) { 
+          var reg = /(?=((.+)(?:.*?\2)+))/g; // . 1 char min
+        } else if (size < 2500) { 
           var reg = /(?=((..+)(?:.*?\2)+))/g; // .. 2 char min
         } else if (size < 5000) {
           var reg = /(?=((...+)(?:.*?\2)+))/g; // ... 3 char min
@@ -180,7 +182,7 @@
         reg.lastIndex = 0
         sub = reg.exec(input); // find the first repeated string
         while (!(sub == null)) {
-          var saving = input.length - ("{" + key + "}:'" + sub[2] + "'," + input.split(sub[2]).join(key)).length
+          var saving = JSURL.stringify(input).length - JSURL.stringify("{" + key + "}:'" + sub[2] + "'," + input.split(sub[2]).join(key)).length
           if (saving > maxSaving) {
             maxSaving = +saving
             maxstr = sub[2]
