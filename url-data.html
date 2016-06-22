@@ -124,7 +124,10 @@
             try {
               theOutput = JSON.parse(data.e)
             } catch (e) {
-              return data.e
+              theOutput = data.e
+            }
+            if (JSON.stringify(theOutput) !== JSON.stringify(this.data)) {
+              this.set("data", data)
             }
             return theOutput
           } else {
