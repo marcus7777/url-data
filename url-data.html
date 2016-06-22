@@ -179,7 +179,7 @@
         } else if (size < 10000) {
           var reg = /(?=((....+)(?:.*?\2)+))/g; // .... 4 char min
         } else {
-          var reg = /(?=((......+)(?:.*?\2)+))/g; // ...... 6 char min
+          var reg = /(?=((...........+)(?:.*?\2)+))/g; // ........... 11 char min
         }
         var sub = "" //somewhere to stick temp results
         var maxstr = "" // our maximum length repeated string
