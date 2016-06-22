@@ -207,6 +207,7 @@
         }
         if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length && cycles > 0) {
           console.log("cycles left",cycles)
+          console.log("Saving", maxSaving)
           return this.encode(output, size, cycles-1)
         } else {
           if (JSURL.stringify(output) !== this.string) {
