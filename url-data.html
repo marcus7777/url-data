@@ -194,6 +194,9 @@
           if (saving > maxSaving) {
             maxSaving = +saving
             maxstr = sub[2]
+            if (maxSaving > 500) {
+              break
+            }
             smallSavingTestLimit = 100
           } else {
             if (smallSavingTestLimit-- < 1) {
