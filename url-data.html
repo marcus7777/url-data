@@ -13,6 +13,7 @@
       compressed: {notify: true, type: Object},
       letters: {type:String, value: "taoinsh.rdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0123456789"},
+      cycles: {type:Number, value: 10},
       _countUp: {type:Array, value: [0,0,0]},
       _chrList: {computed: "getChrList(letters,numbers)"},
       _tryKeys: {computed: "getTryKeys(_chrList)"},
@@ -143,9 +144,12 @@
         return
       }
     },
-    encode: function(theInput, size) {
+    encode: function(theInput, size, cycles) {
       if (JSON.stringify(theInput) !== JSON.stringify(this.decode(this.string))) {
         this._countUp = [0,0,0]
+        if (cycles === undefined) {
+          cycles = this.cycles
+        }
         if (!size) {
           size = JSURL.stringify(theInput).length
         }
@@ -194,8 +198,8 @@
           output[key] = maxstr
           output.e = input.split(maxstr).join(key)
         }
-        if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length) {
-          return this.encode(output, size)
+        if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length && this.cycles > 0) {
+          return this.encode(output, size, cycles-1)
         } else {
           if (JSURL.stringify(output) !== this.string) {
             this.set("compressed", output)
