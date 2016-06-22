@@ -192,6 +192,7 @@
           return this.encode(output, size)
         } else {
           if (JSURL.stringify(output) !== this.string) {
+            this.set("compressed", output)
             this.set("string", JSURL.stringify(output))
           }
           return JSURL.stringify(output)
