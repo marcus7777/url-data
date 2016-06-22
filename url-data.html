@@ -183,6 +183,8 @@
         var maxstr = "" // our maximum length repeated string
         var maxSaving = 2
         var key = this.findAkey(input)
+        var smallSubLimit
+        
         reg.lastIndex = 0
         sub = reg.exec(input); // find the first repeated string
         while (!(sub == null)) {
@@ -190,6 +192,11 @@
           if (saving > maxSaving) {
             maxSaving = +saving
             maxstr = sub[2]
+            smallSubLimit = 100
+          } else if (saving * 10 > maxSaving) {
+            if (smallSubLimit-- < 1) {
+              break
+            }
           }
           sub = reg.exec(input)
           reg.lastIndex++; // start searching from the next position
