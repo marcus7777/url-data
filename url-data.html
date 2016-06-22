@@ -145,7 +145,7 @@
       }
     },
     encode: function(theInput, size, cycles) {
-      if (JSON.stringify(theInput) !== JSON.stringify(this.decode(this.string))) {
+      if (!this.string || JSON.stringify(theInput) !== JSON.stringify(this.decode(this.string))) {
         this._countUp = [0,0,0]
         if (cycles === undefined) {
           cycles = this.cycles
