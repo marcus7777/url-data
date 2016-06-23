@@ -180,8 +180,12 @@
         var smallSavingTestLimit = 100
         
         reg.lastIndex = 0
-        var startSlice = Math.floor((input.length - 2500) * (cycles / this.cycles))
-        var testSlice = input.slice(startSlice, startSlice + 2500)
+        if (input.length > 2500) {
+          var startSlice = Math.floor((input.length - 2500) * (cycles / this.cycles))
+          var testSlice = input.slice(startSlice, startSlice + 2500)
+        } else {
+          var testSlice = input
+        }
         var inputSize = JSURL.stringify(input).length
         sub = reg.exec(testSlice) // find the first repeated string
         while (!(sub == null)) {
