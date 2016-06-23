@@ -181,8 +181,8 @@
         
         reg.lastIndex = 0
         var testSlice = input.slice(0,2500)
+        var inputSize = JSURL.stringify(input).length
         sub = reg.exec(testSlice) // find the first repeated string
-        inputSize = JSURL.stringify(input).length
         while (!(sub == null)) {
           var saving = inputSize - JSURL.stringify("{" + key + "}:'" + sub[2] + "'," + input.split(sub[2]).join(key)).length
           if (saving > maxSaving) {
