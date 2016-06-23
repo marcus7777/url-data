@@ -188,7 +188,7 @@
         var smallSavingTestLimit = 100
         
         reg.lastIndex = 0
-        sub = reg.exec(input.slice(0,5000)); // find the first repeated string
+        sub = reg.exec(input.slice(0,1000)); // find the first repeated string
         while (!(sub == null)) {
           var saving = JSURL.stringify(input).length - JSURL.stringify("{" + key + "}:'" + sub[2] + "'," + input.split(sub[2]).join(key)).length
           if (saving > maxSaving) {
@@ -203,7 +203,7 @@
               break
             }
           }
-          sub = reg.exec(input.slice(0,5000))
+          sub = reg.exec(input.slice(0,1000))
           reg.lastIndex++; // start searching from the next position
         }
         if (key && maxstr) {
