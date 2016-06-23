@@ -181,7 +181,7 @@
         
         reg.lastIndex = 0
         var startSlice = Math.floor((size - 2500) * (cycles / this.cycles))
-        var testSlice = input.slice(0, 2500)
+        var testSlice = input.slice(startSlice, startSlice + 2500)
         var inputSize = JSURL.stringify(input).length
         sub = reg.exec(testSlice) // find the first repeated string
         while (!(sub == null)) {
