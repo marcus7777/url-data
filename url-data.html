@@ -203,7 +203,7 @@
               break
             }
           }
-          sub = reg.exec(input)
+          sub = reg.exec(input.slice(0,5000))
           reg.lastIndex++; // start searching from the next position
         }
         if (key && maxstr) {
