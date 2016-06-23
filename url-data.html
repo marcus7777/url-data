@@ -146,12 +146,12 @@
     },
     encode: function(theInput, size, cycles) {
       if (!this.string || JSON.stringify(theInput) !== JSON.stringify(this.decode(this.string))) {
-        this._countUp = [0,0,0]
         if (cycles === undefined) {
           cycles = this.cycles
         }
         if (!size) {
           size = JSURL.stringify(theInput).length
+          this._countUp = [0,0,0]
         }
         if (typeof theInput === "string") {
           var input = "" + theInput
@@ -170,16 +170,8 @@
             this.set("string", JSURL.stringify(theInput))
           }
           return JSURL.stringify(theInput) // No need to reduce
-        } else if (size < 1000) { 
-          var reg = /(?=((.+)(?:.*?\2)+))/g; // . 1 char min
-        } else if (size < 2500) { 
-          var reg = /(?=((..+)(?:.*?\2)+))/g; // .. 2 char min
-        } else if (size < 5000) {
-          var reg = /(?=((...+)(?:.*?\2)+))/g; // ... 3 char min
-        } else if (size < 10000) {
-          var reg = /(?=((....+)(?:.*?\2)+))/g; // .... 4 char min
         } else {
-          var reg = /(?=((...........+)(?:.*?\2)+))/g; // ........... 11 char min
+          var reg = /(?=((.+)(?:.*?\2)+))/g
         }
         var sub = "" //somewhere to stick temp results
         var maxstr = "" // our maximum length repeated string
