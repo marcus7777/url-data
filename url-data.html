@@ -107,7 +107,7 @@
     decode: function(theInput) {
       if (theInput) {
         var theOutput
-        this._countDown = this.getIndexKey(this._tryKeys) // reset count down
+        // this._countDown = this.getIndexKey(this._tryKeys) // reset count down 
         try { // the new way
           data = JSURL.parse(theInput)
         } catch (e) { // try the old way
@@ -115,6 +115,7 @@
         }
         if (data.e) {
           do {
+            this._countDown = this.getIndexKey(this._tryKeys) // needs fixing /\
             theLastKey = this.lastKey(Object.keys(data))
             if (theLastKey) {
               data.e = data.e.split(theLastKey).join(data[theLastKey])
