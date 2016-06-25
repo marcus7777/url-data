@@ -73,9 +73,6 @@
       this._countUp[0] = 0
       return false
     },
-    getIndexKey: function(tryKeys) {
-      return [tryKeys.length, tryKeys.length, tryKeys.length]
-    },
     getTryKeys: function(chrList) {
       return chrList.replace("e","").split("").reverse()
     },
@@ -85,13 +82,15 @@
     decode: function(theInput) {
       if (theInput) {
         var theOutput
+        var data
         // this._countDown = this.getIndexKey(this._tryKeys) // reset count down 
         try { // the new way
           data = JSURL.parse(theInput)
         } catch (e) { // try the old way
           data = JSON.parse(decodeURIComponent(theInput)) 
         }
-        if (data.e && data.k) {
+        if (data.e && data.k && Object.keys(data).length === 2 && typeof data.e === "string" && Array.isArray(data.k)) {
+          this.set("compressed", JSON.parse(JSON.stringify(data)))
           for (; data.k.length;) {
             var key = data.k.pop()
             var theKey = ""
@@ -132,12 +131,10 @@
           }
           return data
         }
-      } else {
-        return
       }
     },
     encode: function(theInput, size, cycles) {
-      if (!this.string || JSON.stringify(theInput) !== JSON.stringify(this.decode(this.string))) {
+      if (!this.string || JSON.stringify(theInput) != JSON.stringify(this.decode(this.string)) && JSURL.stringify(this.compressed) != this.string) {
         if (cycles === undefined) {
           cycles = this.cycles
         }
