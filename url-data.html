@@ -11,7 +11,7 @@
       data: {notify: true},
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
-      letters: {type:String, value: "taoinshrdcumwfgypbvkjxqz"},
+      letters: {type:String, value: "etaoinshrdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0123456789."},
       cycles: {type:Number, value: 32},
       trys: {type:Number, value: 100},
@@ -22,25 +22,43 @@
       stringFromData: {computed: "encode(data)"}
     },
     findAkey: function(text) {
-      if (this._countUp[1] === 0 && this._countUp[2] === 0) {
-        for (; this._countUp[0] < this._tryKeys.length; this._countUp[0]++) {
-          if (text.indexOf(this._tryKeys[this._countUp[0]]) === -1) {
-            return this._tryKeys[this._countUp[0]]
+      for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
+        if (text.indexOf(this._tryKeys[this._countUp[2]]) === -1) {
+          return this._tryKeys[this._countUp[2]]
+        }
+      }
+      this._countUp[2] = 0
+      for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
+        if (text.indexOf("E" + this._tryKeys[this._countUp[2]]) === -1) {
+          return "E" + this._tryKeys[this._countUp[2]]
+        }
+        if (text.indexOf("e" + this._tryKeys[this._countUp[2]]) === -1) {
+          return "e" + this._tryKeys[this._countUp[2]]
+        }
+      }
+      this._countUp[2] = 0
+      for (; this._countUp[1] < this._tryKeys.length; this._countUp[1]++) {
+        for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
+          if (text.indexOf(this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]) === -1) {
+            return this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]
           }
         }
-        this._countUp[0] = 0
+        this._countUp[2] = 0
       }
-      if (this._countUp[2] === 0) {
-        for (; this._countUp[0] < this._tryKeys.length; this._countUp[0]++) {
-          for (; this._countUp[1] < this._tryKeys.length; this._countUp[1]++) {
-            if (text.indexOf(this._tryKeys[this._countUp[0]] + this._tryKeys[this._countUp[1]]) === -1) {
-              return this._tryKeys[this._countUp[0]] + this._tryKeys[this._countUp[1]]
-            }
+      this._countUp[1] = 0
+      for (; this._countUp[1] < this._tryKeys.length; this._countUp[1]++) {
+        for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
+          if (text.indexOf("e"+this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]) === -1) {
+            return "e"+this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]
           }
-          this._countUp[1] = 0
+          if (text.indexOf(this._tryKeys[this._countUp[1]] + "e" + this._tryKeys[this._countUp[2]]) === -1) {
+            return this._tryKeys[this._countUp[1]] + "e" + this._tryKeys[this._countUp[2]]
+          }
         }
-        this._countUp[0] = 0
+        this._countUp[2] = 0
       }
+      this._countUp[1] = 0
+
       for (; this._countUp[0] < this._tryKeys.length; this._countUp[0]++) {
         for (; this._countUp[1] < this._tryKeys.length; this._countUp[1]++) {
           for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
@@ -53,54 +71,13 @@
         this._countUp[1] = 0
       }
       this._countUp[0] = 0
-    },
-    lastKey: function(keys) {
-      var keyLength = keys.reduce(function(a, b) {
-        return a.length > b.length ? a : b;
-      }).length
-      if (keyLength === 3) {
-        for (; this._countDown[0] > -1; this._countDown[0]--) {
-          for (; this._countDown[1] > -1; this._countDown[1]--) {
-            for (; this._countDown[2] > -1; this._countDown[2]--) {
-              if (keys.indexOf(this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]] + this._tryKeys[this._countDown[2]]) !== -1) {
-                return this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]] + this._tryKeys[this._countDown[2]]
-              }
-            }
-            this._countDown[2] = this._tryKeys.length
-          }
-          this._countDown[1] = this._tryKeys.length
-        }
-        this._countDown[0] = this._tryKeys.length
-      } else if (keyLength === 2) {
-        for (; this._countDown[0] > -1; this._countDown[0]--) {
-          for (; this._countDown[1] > -1; this._countDown[1]--) {
-            if (keys.indexOf(this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]]) !== -1) {
-              return this._tryKeys[this._countDown[0]] + this._tryKeys[this._countDown[1]]
-            }
-          }
-          this._countDown[1] = this._tryKeys.length
-        }
-        this._countDown[0] = this._tryKeys.length
-      } else {
-        if (keys.length === 1 && keys[0] === "e") {
-          return false
-        } else {
-          this._countDown[0] = this._tryKeys.length 
-          for (; this._countDown[0] > -1; this._countDown[0]--) {
-            if (keys.indexOf(this._tryKeys[this._countDown[0]]) !== -1) {
-              return this._tryKeys[this._countDown[0]]
-            }
-          }
-          this._countDown[0] = this._tryKeys.length
-        }
-      }
       return false
     },
     getIndexKey: function(tryKeys) {
       return [tryKeys.length, tryKeys.length, tryKeys.length]
     },
     getTryKeys: function(chrList) {
-      return chrList.split("").reverse()
+      return chrList.replace("e","").split("").reverse()
     },
     getChrList: function(letters, numbers) {
       return letters + letters.toUpperCase() + numbers
@@ -114,23 +91,33 @@
         } catch (e) { // try the old way
           data = JSON.parse(decodeURIComponent(theInput)) 
         }
-        if (data.e) {
-          do {
-            this._countDown = this.getIndexKey(this._tryKeys) // needs fixing /\
-            theLastKey = this.lastKey(Object.keys(data))
-            if (theLastKey) {
-              data.e = data.e.split(theLastKey).join(data[theLastKey])
-              delete(data[theLastKey])
+        if (data.e && data.k) {
+          for (; data.k.length;) {
+            var key = data.k.pop()
+            var theKey = ""
+            if (key.slice(1, 2) === "e" && key.slice(2, 3) === "e") {
+              theKey = key.slice(0, 1)
+            } else if (key.slice(2, 3) === "e") {
+              theKey = key.slice(0, 2)
+            } else {
+              theKey = key.slice(0, 3)
             }
-          } while (theLastKey)
-          if (Object.keys(data).length === 1) {
+            var theString = key.slice(3)
+            if (theKey && theString) {
+              data.e = data.e.split(theKey).join(theString)
+            }
+          }
+          if (Object.keys(data).length === 2) {
             try {
               theOutput = JSON.parse(data.e)
             } catch (e) {
               theOutput = data.e
             }
             if (JSON.stringify(theOutput) !== JSON.stringify(this.data)) {
+              this.set("done", false)
               this.set("data", theOutput)
+            } else {
+              this.set("done", true)
             }
             return theOutput
           } else {
@@ -138,7 +125,10 @@
           }
         } else {
           if (JSON.stringify(data) !== JSON.stringify(this.data)) {
+            this.set("done", false)
             this.set("data", data)
+          } else {
+            this.set("done", true)
           }
           return data
         }
@@ -157,14 +147,14 @@
         }
         if (typeof theInput === "string") {
           var input = "" + theInput
-          var output = {e: theInput}
+          var output = {e: theInput, k:[]}
         } else {
           if (theInput.e) {
             var input = "" + theInput.e
             var output = JSON.parse(JSON.stringify(theInput))
           } else {
             var input = JSON.stringify(theInput)
-            var output = {e:JSON.stringify(theInput)}
+            var output = {e:JSON.stringify(theInput),k:[]}
           }
         }
         if (size < 50) { 
@@ -179,38 +169,61 @@
         var maxstr = "" // our maximum length repeated string
         var maxSaving = 2
         var key = this.findAkey(input)
-        var smallSavingTestLimit = +this.trys
-        
-        reg.lastIndex = 0
-        if (input.length > 2500) {
-          var startSlice = Math.floor((input.length - 2500) * (cycles / this.cycles))
-          var testSlice = input.slice(startSlice, startSlice + 2500)
-        } else {
-          var testSlice = input
-        }
-        var inputSize = JSURL.stringify(input).length
-        sub = reg.exec(testSlice) // find the first repeated string
-        while (!(sub == null)) {
-          var saving = inputSize - JSURL.stringify("{" + key + "}:'" + sub[2] + "'," + input.split(sub[2]).join(key)).length
-          if (saving > maxSaving) {
-            maxSaving = +saving
-            maxstr = sub[2]
-            if (maxSaving > ((inputSize + 500) / 10)) {
-              break
-            }
-            smallSavingTestLimit = +this.trys
-          } else {
-            if (smallSavingTestLimit-- < 1) {
-              break
-            }
+        if (key) {
+          var theKey = ""
+          if (key.length === 3) {
+            theKey = key  
+          } else if (key.length === 2) {
+            theKey = key + "e"  
+          } else if (key.length === 1) {
+            theKey = key + "ee" 
           }
-          sub = reg.exec(testSlice)
-          reg.lastIndex++; // start searching from the next position
-        }
-        if (key && maxstr) {
-          output[key] = maxstr
-          output.e = input.split(maxstr).join(key)
-        }
+          var smallSavingTestLimit = +this.trys
+        
+          reg.lastIndex = 0
+          if (input.length > 2500) {
+            var startSlice = Math.floor((input.length - 2500) * (cycles / this.cycles))
+            var testSlice = input.slice(startSlice, startSlice + 2500)
+          } else {
+            var testSlice = input
+          }
+          var inputSize = JSURL.stringify(input).length
+          sub = reg.exec(testSlice) // find the first repeated string
+          while (!(sub == null)) {
+            var saving = inputSize - JSURL.stringify( "\"" + theKey + sub[2] + "\"," + input.split(sub[2]).join(key)).length
+            if (saving > maxSaving) {
+              maxSaving = +saving
+              maxstr = sub[2]
+              if (maxSaving > ((inputSize / 10) + 50)) { // good saving take it
+                break
+              }
+              smallSavingTestLimit = +this.trys
+            } else {
+              if (smallSavingTestLimit-- < 1) {
+                console.log("trys out")
+                break
+              }
+            }
+            sub = reg.exec(testSlice)
+            reg.lastIndex++; // start searching from the next position
+          }
+          if (maxstr) {
+            output.e = input.split(maxstr).join(key)
+            
+            if (key.length === 3) {
+              theKey = key + maxstr 
+            } else if (key.length === 2) {
+              theKey = key + "e" + maxstr 
+            } else if (key.length === 1 ) {
+              theKey = key + "ee" + maxstr
+            }
+            output.k.unshift(theKey)
+          } else {
+            console.log("out savings")
+          }  
+        } else {
+          console.log("out of keys")
+        }  
         if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length && cycles > 0) {
           console.log("cycles left",cycles)
           console.log("Saving", maxSaving)
