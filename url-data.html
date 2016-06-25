@@ -14,6 +14,7 @@
       letters: {type:String, value: "taoinshrdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0123456789."},
       cycles: {type:Number, value: 32},
+      trys: {type:Number, value: 100},
       _countUp: {type:Array, value: [0,0,0]},
       _chrList: {computed: "getChrList(letters,numbers)"},
       _tryKeys: {computed: "getTryKeys(_chrList)"},
@@ -178,7 +179,7 @@
         var maxstr = "" // our maximum length repeated string
         var maxSaving = 2
         var key = this.findAkey(input)
-        var smallSavingTestLimit = 100
+        var smallSavingTestLimit = +this.trys
         
         reg.lastIndex = 0
         if (input.length > 2500) {
@@ -197,7 +198,7 @@
             if (maxSaving > ((inputSize + 500) / 10)) {
               break
             }
-            smallSavingTestLimit = 100
+            smallSavingTestLimit = +this.trys
           } else {
             if (smallSavingTestLimit-- < 1) {
               break
