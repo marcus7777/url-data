@@ -159,8 +159,10 @@
             this.set("string", JSURL.stringify(theInput))
           }
           return JSURL.stringify(theInput) // No need to reduce
-        } else {
+        } else if (size > 5000){
           var reg = /(?=((..+)(?:..*?\2)+))/g
+        } else {
+          var reg = /(?=((.+)(?:.*?\2)+))/g
         }
         var sub = "" //somewhere to stick temp results
         var maxstr = "" // our maximum length repeated string
