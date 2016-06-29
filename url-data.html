@@ -222,7 +222,8 @@
         } else {
           console.log("out of keys")
         }  
-        if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length && cycles > 0) {
+        var outputLength = JSURL.stringify(output).length 
+        if (outputLength + 2 < JSURL.stringify(theInput).length || cycles > 0) {
           console.log("cycles left",cycles)
           console.log("Saving", maxSaving)
           return this.encode(output, size, cycles-1)
@@ -231,7 +232,8 @@
             this.set("compressed", output)
             this.set("string", JSURL.stringify(output))
           }
-          console.log("Total saving",size - JSURL.stringify(output).length)
+          console.log("Total saving", size - outputLength)
+          
           return JSURL.stringify(output)
         }
       }
