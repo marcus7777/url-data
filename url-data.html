@@ -11,6 +11,7 @@
       data: {notify: true},
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
+      compress: {type:Boolean, value: false},
       letters: {type:String, value: "etaoinshrdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0123456789."},
       cycles: {type:Number, value: 32},
@@ -134,7 +135,9 @@
       }
     },
     encode: function(theInput, size, cycles) {
-      if (!this.done && !this.string || JSON.stringify(theInput) != JSON.stringify(this.decode(this.string)) && JSURL.stringify(this.compressed) != this.string) {
+      if (!this.compress) {
+        return JSURL.parse(theInput)
+      } else if (!this.done && !this.string || JSON.stringify(theInput) != JSON.stringify(this.decode(this.string)) && JSURL.stringify(this.compressed) != this.string) {
         delete(this.compressed)
         if (cycles === undefined) {
           cycles = this.cycles
