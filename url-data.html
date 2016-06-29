@@ -136,7 +136,7 @@
     },
     encode: function(theInput, size, cycles) {
       if (!this.compress) {
-        return JSURL.parse(theInput)
+        return JSURL.stringify(theInput)
       } else if (!this.done && !this.string || JSON.stringify(theInput) != JSON.stringify(this.decode(this.string)) && JSURL.stringify(this.compressed) != this.string) {
         delete(this.compressed)
         if (cycles === undefined) {
