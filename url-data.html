@@ -84,16 +84,19 @@
       if (theInput) {
         var theOutput
         var data
+        
         // this._countDown = this.getIndexKey(this._tryKeys) // reset count down 
         try { // the new way
           data = JSURL.parse(theInput)
         } catch (e) { // try the old way
           data = JSON.parse(decodeURIComponent(theInput)) 
         }
-        if (data.e && data.k && Object.keys(data).length === 2 && typeof data.e === "string" && Array.isArray(data.k)) {
+        if (Object.keys(data)).length === 1 && Object.keys(data))[0].length > 20 && Array.isArray(data[Object.keys(data))[0]])) {
+          var arrayOfKeys = data[Object.keys(data))[0]]
+          var hydrating = Object.keys(data))[0]
           this.set("compressed", JSON.parse(JSON.stringify(data)))
           for (; data.k.length;) {
-            var key = data.k.pop()
+            var key = arrayOfKeys.pop()
             var theKey = ""
             if (key.slice(1, 2) === "e" && key.slice(2, 3) === "e") {
               theKey = key.slice(0, 1)
@@ -104,14 +107,12 @@
             }
             var theString = key.slice(3)
             if (theKey && theString) {
-              data.e = data.e.split(theKey).join(theString)
+              hydrating = hydrating.split(theKey).join(theString)
             }
-          }
-          if (Object.keys(data).length === 2) {
             try {
-              theOutput = JSON.parse(data.e)
+              theOutput = JSON.parse(hydrating)
             } catch (e) {
-              theOutput = data.e
+              theOutput = hydrating
             }
             if (JSON.stringify(theOutput) !== JSON.stringify(this.data)) {
               this.set("done", false)
@@ -237,12 +238,13 @@
           console.log("Saving", maxSaving)
           return this.encode(output, size, cycles-1)
         } else {
+          outputObj = {}
+          outputObj[output.e] = output.k
           if (JSURL.stringify(output) !== this.string) {
             this.set("compressed", output)
             this.set("string", JSURL.stringify(output))
           }
           console.log("Total saving", size - outputLength)
-          
           return JSURL.stringify(output)
         }
       }
