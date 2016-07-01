@@ -241,12 +241,12 @@
         } else {
           outputObj = {}
           outputObj[output.e] = output.k
-          if (JSURL.stringify(output) !== this.string) {
-            this.set("compressed", output)
-            this.set("string", JSURL.stringify(output))
+          if (JSURL.stringify(outputObj) !== this.string) {
+            this.set("compressed", outputObj)
+            this.set("string", JSURL.stringify(outputObj))
           }
           console.log("Total saving", size - outputLength)
-          return JSURL.stringify(output)
+          return JSURL.stringify(outputObj)
         }
       }
     }
