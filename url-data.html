@@ -235,7 +235,7 @@
           console.log("out of keys")
         }  
         var outputLength = JSURL.stringify(output).length 
-        if (outputLength + 2 < JSURL.stringify(theInput).length || cycles > 0) {
+        if (outputLength + 2 < JSURL.stringify(theInput).length && cycles > 0) {
           console.log("cycles left",cycles)
           return this.encode(output, size, cycles-1)
         } else {
