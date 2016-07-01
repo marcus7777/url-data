@@ -31,7 +31,7 @@
           })
           
           test('Decode string for a Array', function(done) {
-            urlData.set("string", "~(e~'*5b.*2c.*2c.*5d~k~(~'.ee*22marcus*22*2c*22marcus*22*2c*22marcus*22))")
+            urlData.set("string", "~(*5b*22marcus*22....*5d~(~'.ee*2c*22marcus*22*2c*22marcus*22))")
             if (urlData.dataFromString.length === 9) {
               done()
             } else {
