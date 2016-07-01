@@ -95,7 +95,7 @@
           var arrayOfKeys = data[Object.keys(data)[0]]
           var hydrating = Object.keys(data)[0]
           this.set("compressed", JSON.parse(JSON.stringify(data)))
-          for (; data.k.length;) {
+          for (; arrayOfKeys.length;) {
             var key = arrayOfKeys.pop()
             var theKey = ""
             if (key.slice(1, 2) === "e" && key.slice(2, 3) === "e") {
