@@ -91,7 +91,7 @@
         } catch (e) { // try the old way
           data = JSON.parse(decodeURIComponent(theInput)) 
         }
-        if (Object.keys(data)).length === 1 && Object.keys(data))[0].length > 20 && Array.isArray(data[Object.keys(data))[0]])) {
+        if (Object.keys(data).length === 1 && Object.keys(data)[0].length > 20 && Array.isArray(data[Object.keys(data)[0]])) {
           var arrayOfKeys = data[Object.keys(data))[0]]
           var hydrating = Object.keys(data))[0]
           this.set("compressed", JSON.parse(JSON.stringify(data)))
