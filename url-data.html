@@ -233,12 +233,14 @@
           }  
         } else {
           console.log("out of keys")
-        }  
-        var outputLength = JSURL.stringify(output).length 
-        if (outputLength + 2 < JSURL.stringify(theInput).length || cycles > 0) {
+        } 
+        if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length || cycles > 0) {
           console.log("cycles left",cycles)
           return this.encode(output, size, cycles-1)
         } else {
+          outputObj = {}
+          outputObj[output.e] = output.k
+          var outputLength = JSURL.stringify(outputObj).length 
           outputObj = {}
           outputObj[output.e] = output.k
           if (JSURL.stringify(outputObj) !== this.string) {
