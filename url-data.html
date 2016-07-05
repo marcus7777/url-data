@@ -243,6 +243,7 @@
           this.cyclesLeft = cycles
           return this.encode(output, size, cycles-1, simpleString)
         } else {
+          this.done = true
           outputObj = {}
           outputObj[output.e] = output.k
           var outputLength = JSURL.stringify(outputObj).length 
