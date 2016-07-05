@@ -109,19 +109,19 @@
             if (theKey && theString) {
               hydrating = hydrating.split(theKey).join(theString)
             }
-            try {
-              theOutput = JSON.parse(hydrating)
-            } catch (e) {
-              theOutput = hydrating
-            }
-            if (JSON.stringify(theOutput) !== JSON.stringify(this.data)) {
-              this.set("done", false)
-              this.set("data", theOutput)
-            } else {
-              this.set("done", true)
-            }
-            return theOutput
           }
+          try {
+            theOutput = JSON.parse(hydrating)
+          } catch (e) {
+            theOutput = hydrating
+          }
+          if (JSON.stringify(theOutput) !== JSON.stringify(this.data)) {
+            this.set("done", false)
+            this.set("data", theOutput)
+          } else {
+            this.set("done", true)
+          }
+          return theOutput
         } else {
           if (JSON.stringify(data) !== JSON.stringify(this.data)) {
             this.set("done", false)
