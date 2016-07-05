@@ -98,14 +98,18 @@
           for (index in arrayOfKeys) {
             var key = arrayOfKeys[index]
             var theKey = ""
-            if (key.slice(1, 2) === "e" && key.slice(2, 3) === "e") {
+            var theString = key.slice(3)
+            if (key.length === 2 || key.length === 3) {
+              theKey = key[0]
+              theString = key.slice(1)
+            } else if (key.slice(1, 2) === "e" && key.slice(2, 3) === "e") {
               theKey = key.slice(0, 1)
             } else if (key.slice(2, 3) === "e") {
               theKey = key.slice(0, 2)
             } else {
               theKey = key.slice(0, 3)
             }
-            var theString = key.slice(3)
+            
             if (theKey && theString) {
               hydrating = hydrating.split(theKey).join(theString)
             }
@@ -225,9 +229,11 @@
               theKey = key + maxstr 
             } else if (key.length === 2) {
               theKey = key + "e" + maxstr 
-            } else if (key.length === 1 ) {
+            } else if (key.length === 1 && (maxstr.length === 1 || maxstr.length === 2) {
+              theKey = key + maxstr
+            } else if (key.length === 1) {
               theKey = key + "ee" + maxstr
-            }
+            } 
             output.k.unshift(theKey)
             console.log("Saving", maxSaving)
           } else {
