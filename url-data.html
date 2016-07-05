@@ -109,10 +109,7 @@
             } else {
               theKey = key.slice(0, 3)
             }
-            
-            if (theKey && theString) {
-              hydrating = hydrating.split(theKey).join(theString)
-            }
+            hydrating = hydrating.split(theKey).join(theString)
           }
           try {
             theOutput = JSON.parse(hydrating)
