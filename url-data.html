@@ -12,7 +12,6 @@
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
       compress: {type:Boolean, value: false},
-      fitChrSpace: {type:Boolean, value: false},
       letters: {type:String, value: "etaoinshrdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0123456789."},
       cycles: {type:Number, value: 32},
@@ -132,20 +131,6 @@
           }
           return data
         }
-      }
-    },
-    fit: function(theInput, keys) {
-      var re = new RegExp('[^'+keys+']', 'g')
-      while ((m = re.exec(str)) !== null) {
-        if (m.index === re.lastIndex) {
-          re.lastIndex++;
-        }
-        console.log(m)
-      }
-      if (newkeys.length) {
-        return {e: theInput, k: newkeys}
-      } else {
-        return theInput
       }
     },
     encode: function(theInput, size, cycles, simpleString) {
