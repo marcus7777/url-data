@@ -12,6 +12,7 @@
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
       compress: {type:Boolean, value: false},
+      fitChrSpace: {type:Boolean, value: false},
       letters: {type:String, value: "etaoinshrdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0123456789."},
       cycles: {type:Number, value: 32},
@@ -133,6 +134,20 @@
         }
       }
     },
+    fit: function(theInput, keys) {
+      var re = new RegExp('[^'+keys+']', 'g')
+      while ((m = re.exec(str)) !== null) {
+        if (m.index === re.lastIndex) {
+          re.lastIndex++;
+        }
+        console.log(m)
+      }
+      if (newkeys.length) {
+        return {e: theInput, k: newkeys}
+      } else {
+        return theInput
+      }
+    },
     encode: function(theInput, size, cycles, simpleString) {
       if (!this.compress) {
         this.done = true
@@ -178,6 +193,7 @@
         var maxstr = "" // our maximum length repeated string
         var maxSaving = 2
         var key = this.findAkey(input)
+        
         if (key) {
           var theKey = ""
           if (key.length === 3) {
