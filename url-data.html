@@ -133,7 +133,7 @@
         }
       }
     },
-    encode: function(theInput, size, cycles) {
+    encode: function(theInput, size, cycles, simpleString) {
       if (!this.compress) {
         this.done = true
         var theSting = JSURL.stringify(theInput)
@@ -148,7 +148,8 @@
           cycles = this.cycles
         }
         if (!size) {
-          size = JSURL.stringify(theInput).length
+          simpleString = JSURL.stringify(theInput)
+          size = simpleString.length
           this._countUp = [0,0,0]
         }
         if (typeof theInput === "string") {
@@ -235,20 +236,24 @@
           console.log("out of keys")
         } 
         if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length || cycles > 0) {
-          console.log("cycles left",cycles)
-          return this.encode(output, size, cycles-1)
+          this.cyclesLeft = cycles
+          return this.encode(output, size, cycles-1, simpleString)
         } else {
           outputObj = {}
           outputObj[output.e] = output.k
           var outputLength = JSURL.stringify(outputObj).length 
           outputObj = {}
           outputObj[output.e] = output.k
-          if (JSURL.stringify(outputObj) !== this.string) {
-            this.set("compressed", outputObj)
-            this.set("string", JSURL.stringify(outputObj))
+          this.totalSaving = size - outputLength
+          if (this.totalSaving > 0) {
+            if (JSURL.stringify(outputObj) !== this.string) {
+              this.set("compressed", outputObj)
+              this.set("string", JSURL.stringify(outputObj))
+            }
+            return JSURL.stringify(outputObj)
+          } else {
+            return simpleString
           }
-          console.log("Total saving", size - outputLength)
-          return JSURL.stringify(outputObj)
         }
       }
     }
