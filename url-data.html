@@ -145,6 +145,7 @@
         return theSting
       } else if (!this.done && !this.string || JSON.stringify(theInput) != JSON.stringify(this.decode(this.string)) && JSURL.stringify(this.compressed) != this.string) {
         delete(this.compressed)
+        this.fire("compressing")
         if (cycles === undefined) {
           cycles = this.cycles
         }
@@ -250,6 +251,7 @@
           outputObj = {}
           outputObj[output.e] = output.k
           this.totalSaving = size - outputLength
+          this.fire("compressed")
           if (this.totalSaving > 0) {
             if (JSURL.stringify(outputObj) !== this.string) {
               this.set("compressed", outputObj)
