@@ -19,8 +19,8 @@
       _countUp: {type:Array, value: [0,0,0]},
       _chrList: {computed: "getChrList(letters,numbers)"},
       _tryKeys: {computed: "getTryKeys(_chrList)"},
-      dataFromString: {computed: "decode(string)"},
-      stringFromData: {computed: "encode(data)"}
+      dataFromString: {notify:true, computed: "decode(string)"},
+      stringFromData: {notify:true, computed: "encode(data)"}
     },
     findAkey: function(text) {
       for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
