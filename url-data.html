@@ -9,6 +9,7 @@
     is: "url-data",
     properties: {
       data: {notify: true},
+      __runDebounceData: {computed: "updateData(debounceData)"},
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
       compress: {type:Boolean, value: false},
@@ -21,6 +22,12 @@
       _tryKeys: {computed: "getTryKeys(_chrList)"},
       dataFromString: {notify:true, computed: "decode(string)"},
       stringFromData: {notify:true, computed: "encode(data, data.*)"}
+    },
+    updateData: function(data){
+      this.debounce("setData", this.setData, 2200)
+    },
+    setData: function(){
+      this.data = this.debounceData
     },
     findAkey: function(text) {
       for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
