@@ -20,7 +20,7 @@
       _chrList: {computed: "getChrList(letters,numbers)"},
       _tryKeys: {computed: "getTryKeys(_chrList)"},
       dataFromString: {notify:true, computed: "decode(string)"},
-      stringFromData: {notify:true, computed: "encode(data)"}
+      stringFromData: {notify:true, computed: "encode(data, data.*)"}
     },
     findAkey: function(text) {
       for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
@@ -149,7 +149,7 @@
         if (cycles === undefined) {
           cycles = this.cycles
         }
-        if (!size) {
+        if (!size || typeof size !== 'number') { // to (data, data.*)
           simpleString = JSURL.stringify(theInput)
           size = simpleString.length
           this._countUp = [0,0,0]
