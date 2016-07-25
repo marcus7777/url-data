@@ -9,7 +9,7 @@
     is: "url-data",
     properties: {
       data: {notify: true},
-      __runDebounceData: {computed: "updateData(debounceData)"},
+      __runDebounceData: {computed: "updateData(debounceData.*)"},
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
       compress: {type:Boolean, value: false},
@@ -21,13 +21,13 @@
       _chrList: {computed: "getChrList(letters,numbers)"},
       _tryKeys: {computed: "getTryKeys(_chrList)"},
       dataFromString: {notify:true, computed: "decode(string)"},
-      stringFromData: {notify:true, computed: "encode(data, data.*)"}
+      stringFromData: {notify:true, computed: "encode(data)"}
     },
     updateData: function(data){
       this.debounce("setData", this.setData, 2200)
     },
     setData: function(){
-      this.data = this.debounceData
+      this.data = JSON.parse(JSON.stringify(this.debounceData))
     },
     findAkey: function(text) {
       for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
@@ -220,7 +220,7 @@
               smallSavingTestLimit = +this.trys
             } else {
               if (smallSavingTestLimit-- < 1) {
-                console.log("trys out")
+                if (this.log) {console.log("trys out")}
                 break
               }
             }
@@ -240,12 +240,12 @@
               theKey = key + "ee" + maxstr
             } 
             output.k.unshift(theKey)
-            console.log("Saving", maxSaving)
+            if (this.log) {console.log("Saving", maxSaving)}
           } else {
-            console.log("out savings")
+            if (this.log) {console.log("out savings")}
           }  
         } else {
-          console.log("out of keys")
+          if (this.log) {console.log("out of keys")}
         } 
         if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length || cycles > 0) {
           this.fire("cycles-left", cycles)
