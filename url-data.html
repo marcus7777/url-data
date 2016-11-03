@@ -99,10 +99,10 @@
           try { // try the old way
             data = JSON.parse(decodeURIComponent(theInput)) 
           } catch (e) { // try with added )'s 
-            try { data = JSURL.parse(theInput+")"))} catch (e) {
-              try { data = JSURL.parse(theInput+"))")) } catch (e) {
-                try { data = JSURL.parse(theInput+")))")) } catch (e) {
-                  try { data = JSURL.parse(theInput+"))))")) } catch (e) {
+            try { data = JSURL.parse(theInput+")")} catch (e) {
+              try { data = JSURL.parse(theInput+"))") } catch (e) {
+                try { data = JSURL.parse(theInput+")))") } catch (e) {
+                  try { data = JSURL.parse(theInput+"))))") } catch (e) {
                     data = JSURL.parse(theInput+")))))")
                   }
                 }
