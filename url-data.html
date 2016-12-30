@@ -141,7 +141,7 @@
             this.set("data", theOutput)
           } else {
             this.set("done", true)
-            this.loaded = true
+            this.set("loaded", true)
           }
           return theOutput
         } else {
@@ -150,6 +150,7 @@
             this.set("data", data)
           } else {
             this.set("done", true)
+            this.set("loaded", true)
           }
           return data
         }
