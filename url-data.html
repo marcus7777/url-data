@@ -13,7 +13,6 @@
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
       compress: {type:Boolean, value: false},
-      loaded: {type:Boolean, notify: true},
       letters: {type:String, value: "etaoinshrdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0123456789."},
       cycles: {type:Number, value: 32},
@@ -141,7 +140,7 @@
             this.set("data", theOutput)
           } else {
             this.set("done", true)
-            this.set("loaded", true)
+            this.fire("loaded")
           }
           return theOutput
         } else {
@@ -150,7 +149,7 @@
             this.set("data", data)
           } else {
             this.set("done", true)
-            this.set("loaded", true)
+            this.fire("loaded")
           }
           return data
         }
