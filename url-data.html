@@ -13,6 +13,7 @@
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
       compress: {type:Boolean, value: false},
+      loaded: {type:Boolean, notify: true},
       letters: {type:String, value: "etaoinshrdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0123456789."},
       cycles: {type:Number, value: 32},
@@ -138,6 +139,7 @@
           if (JSON.stringify(theOutput) !== JSON.stringify(this.data)) {
             this.set("done", false)
             this.set("data", theOutput)
+            this.loaded = true
           } else {
             this.set("done", true)
           }
