@@ -139,9 +139,9 @@
           if (JSON.stringify(theOutput) !== JSON.stringify(this.data)) {
             this.set("done", false)
             this.set("data", theOutput)
-            this.loaded = true
           } else {
             this.set("done", true)
+            this.loaded = true
           }
           return theOutput
         } else {
