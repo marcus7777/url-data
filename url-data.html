@@ -87,7 +87,7 @@
     getChrList: function(letters, numbers) {
       return letters + letters.toUpperCase() + numbers
     },
-    decode: function(theInput) {
+    decode: function(theInput, noSet) {
       if (theInput) {
         var theOutput
         var data
@@ -138,21 +138,25 @@
           } catch (e) {
             theOutput = hydrating
           }
-          if (JSON.stringify(theOutput) !== JSON.stringify(this.data)) {
-            this.set("done", false)
-            this.set("data", theOutput)
-          } else {
-            this.set("done", true)
-            this.fire("loaded")
+          if (!noSet) {
+            if (JSON.stringify(theOutput) !== JSON.stringify(this.data)) {
+              this.set("done", false)
+              this.set("data", theOutput)
+            } else {
+              this.set("done", true)
+              this.fire("loaded")
+            }
           }
           return theOutput
         } else {
-          if (JSON.stringify(data) !== JSON.stringify(this.data)) {
-            this.set("done", false)
-            this.set("data", data)
-          } else {
-            this.set("done", true)
-            this.fire("loaded")
+          if (!noSet) {
+            if (JSON.stringify(data) !== JSON.stringify(this.data)) {
+              this.set("done", false)
+              this.set("data", data)
+            } else {
+              this.set("done", true)
+              this.fire("loaded")
+            }
           }
           return data
         }
