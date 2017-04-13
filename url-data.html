@@ -115,7 +115,7 @@
           var hydrating = Object.keys(data)[0]
           var compressedStr = JSON.stringify(data)
           if (compressedStr !== JSON.stringify(this.compressed)) {
-            this.set("compressed", JSON.parse(compressed))
+            this.set("compressed", JSON.parse(compressedStr))
           }
           for (index in arrayOfKeys) {
             var key = arrayOfKeys[index]
