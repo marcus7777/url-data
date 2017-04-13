@@ -113,7 +113,10 @@
         if (Object.keys(data).length === 1 && Object.keys(data)[0].length > 20 && Array.isArray(data[Object.keys(data)[0]])) {
           var arrayOfKeys = data[Object.keys(data)[0]]
           var hydrating = Object.keys(data)[0]
-          this.set("compressed", JSON.parse(JSON.stringify(data)))
+          var compressedStr = JSON.stringify(data)
+          if (compressedStr !== JSON.stringify(this.compressed)) {
+            this.set("compressed", JSON.parse(compressed))
+          }
           for (index in arrayOfKeys) {
             var key = arrayOfKeys[index]
             var theKey = ""
