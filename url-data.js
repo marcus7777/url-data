@@ -1,9 +1,10 @@
 import JSURL from "jsurl"
 export default {
-    properties: {
+  props: {
       data: {notify: true},
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
+      
       stringFromData: {notify:true, computed: "encode(data)"}
 
       __runDebounceData: {computed: "updateData(debounceData.*)"},
@@ -16,7 +17,8 @@ export default {
       cycles: {type:Number, value: 32},
       trys: {type:Number, value: 100},
       _countUp: {type:Array, value: [0,0,0]},
-    },
+  },
+  methods:{
     updateData: function(data){
       this.debounce("setData", this.setData, 2200)
     },
@@ -287,3 +289,4 @@ export default {
       }
     }
   }
+}
