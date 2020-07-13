@@ -4,7 +4,6 @@ export default {
       data: {notify: true},
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
-      dataFromString: {notify:true, computed: "decode(string)"},
       stringFromData: {notify:true, computed: "encode(data)"}
 
       __runDebounceData: {computed: "updateData(debounceData.*)"},
