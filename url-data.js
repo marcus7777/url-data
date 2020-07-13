@@ -1,80 +1,110 @@
 import JSURL from "jsurl"
 export default {
   props: {
-      data: {notify: true},
-      string: {notify: true, type: String},
-      compressed: {notify: true, type: Object},
-      
-      stringFromData: {notify:true, computed: "encode(data)"}
-
-      __runDebounceData: {computed: "updateData(debounceData.*)"},
-      _chrList: {computed: "getChrList(letters,numbers)"},
-      _tryKeys: {computed: "getTryKeys(_chrList)"},
-      
-      compress: {type:Boolean, value: false},
-      letters: {type:String, value: "etaoinshrdcumwfgypbvkjxqz"},
-      numbers: {type:String, value: "0123456789."},
-      cycles: {type:Number, value: 32},
-      trys: {type:Number, value: 100},
-      _countUp: {type:Array, value: [0,0,0]},
+    data: Object,
+    string: String,
+    cycles: {
+      type:Number,
+      default: 32
+    },
+    trys: {
+      type: Number,
+      default: 100,
+    },
+  },
+  watch:{
+    string(val) {
+      this.$emit("data",val)
+    },
+    data(val) {
+      this.$emit("data",val)
+    },
+  },
+  data() {
+    return {
+      letters: "etaoinshrdcumwfgypbvkjxqz",
+      numbers: "0123456789.",
+      countUp: [0,0,0],
+      compressed: {},
+    }
+  },
+  computed:{
+    _chrList: {
+      this.getChrList(this.letters,this.numbers)
+    },
+    _tryKeys() {
+      this.getTryKeys(this._chrList)
+    },
   },
   methods:{
+    debounce:(func, wait = 2500, immediate) {
+      var timeout
+      return function() {
+        var context = this, args = arguments;
+        clearTimeout(timeout)
+        timeout = setTimeout(function() {
+          timeout = null
+          if (!immediate) func.apply(context, args)
+        }, wait);
+        if (immediate && !timeout) func.apply(context, args)
+      }
+    },
     updateData: function(data){
-      this.debounce("setData", this.setData, 2200)
+      this.debounce(this.setData, 2200)
     },
     setData: function(){
       this.data = JSON.parse(JSON.stringify(this.debounceData))
     },
     findAkey: function(text) {
-      for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
-        if (text.indexOf(this._tryKeys[this._countUp[2]]) === -1) {
-          return this._tryKeys[this._countUp[2]]
+      for (; this.countUp[2] < this._tryKeys.length; this.countUp[2]++) {
+        if (text.indexOf(this._tryKeys[this.countUp[2]]) === -1) {
+          return this._tryKeys[this.countUp[2]]
         }
       }
-      this._countUp[2] = 0
-      for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
-        if (text.indexOf("E" + this._tryKeys[this._countUp[2]]) === -1) {
-          return "E" + this._tryKeys[this._countUp[2]]
+      this.countUp[2] = 0
+      for (; this.countUp[2] < this._tryKeys.length; this.countUp[2]++) {
+        if (text.indexOf("E" + this._tryKeys[this.countUp[2]]) === -1) {
+          return "E" + this._tryKeys[this.countUp[2]]
         }
-        if (text.indexOf("e" + this._tryKeys[this._countUp[2]]) === -1) {
-          return "e" + this._tryKeys[this._countUp[2]]
+        if (text.indexOf("e" + this._tryKeys[this.countUp[2]]) === -1) {
+          return "e" + this._tryKeys[this.countUp[2]]
         }
       }
-      this._countUp[2] = 0
-      for (; this._countUp[1] < this._tryKeys.length; this._countUp[1]++) {
-        for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
-          if (text.indexOf(this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]) === -1) {
-            return this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]
+      this.countUp[2] = 0
+      for (; this.countUp[1] < this._tryKeys.length; this.countUp[1]++) {
+        for (; this.countUp[2] < this._tryKeys.length; this.countUp[2]++) {
+          if (text.indexOf(this._tryKeys[this.countUp[1]] + this._tryKeys[this.countUp[2]]) === -1) {
+            return this._tryKeys[this.countUp[1]] + this._tryKeys[this.countUp[2]]
           }
         }
-        this._countUp[2] = 0
+        this.countUp[2] = 0
       }
-      this._countUp[1] = 0
-      for (; this._countUp[1] < this._tryKeys.length; this._countUp[1]++) {
-        for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
-          if (text.indexOf("e"+this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]) === -1) {
-            return "e"+this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]
+      this.countUp[1] = 0
+      for (; this.countUp[1] < this._tryKeys.length; this.countUp[1]++) {
+        for (; this.countUp[2] < this._tryKeys.length; this.countUp[2]++) {
+          if (text.indexOf("e"+this._tryKeys[this.countUp[1]] + this._tryKeys[this.countUp[2]]) === -1) {
+            return "e"+this._tryKeys[this.countUp[1]] + this._tryKeys[this.countUp[2]]
           }
-          if (text.indexOf(this._tryKeys[this._countUp[1]] + "e" + this._tryKeys[this._countUp[2]]) === -1) {
-            return this._tryKeys[this._countUp[1]] + "e" + this._tryKeys[this._countUp[2]]
+          if (text.indexOf(this._tryKeys[this.countUp[1]] + "e" + this._tryKeys[this.countUp[2]]) === -1) {
+            return this._tryKeys[this.countUp[1]] + "e" + this._tryKeys[this.countUp[2]]
           }
         }
-        this._countUp[2] = 0
+        this.countUp[2] = 0
       }
-      this._countUp[1] = 0
+      this.countUp[1] = 0
 
-      for (; this._countUp[0] < this._tryKeys.length; this._countUp[0]++) {
-        for (; this._countUp[1] < this._tryKeys.length; this._countUp[1]++) {
-          for (; this._countUp[2] < this._tryKeys.length; this._countUp[2]++) {
-            if (text.indexOf(this._tryKeys[this._countUp[0]] + this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]) === -1) {
-              return this._tryKeys[this._countUp[0]] + this._tryKeys[this._countUp[1]] + this._tryKeys[this._countUp[2]]
+      for (; this.countUp[0] < this._tryKeys.length; this.countUp[0]++) {
+        for (; this.countUp[1] < this._tryKeys.length; this.countUp[1]++) {
+          for (; this.countUp[2] < this._tryKeys.length; this.countUp[2]++) {
+            if (text.indexOf(this._tryKeys[this.countUp[0]] + this._tryKeys[this.countUp[1]] + this._tryKeys[this.countUp[2]]) === -1) {
+              return this._tryKeys[this.countUp[0]] + this._tryKeys[this.countUp[1]] + this._tryKeys[this.countUp[2]]
             }
           }
-          this._countUp[2] = 0
+          this.countUp[2] = 0
         }
-        this._countUp[1] = 0
+        this.countUp[1] = 0
       }
-      this._countUp[0] = 0
+      this.countUp[0] = 0
       return false
     },
     getTryKeys: function(chrList) {
@@ -87,14 +117,14 @@ export default {
       if (theInput) {
         var theOutput
         var data
-        
-        // this._countDown = this.getIndexKey(this._tryKeys) // reset count down 
+
+        // this._countDown = this.getIndexKey(this._tryKeys) // reset count down
         try { // the new way
           data = JSURL.parse(theInput)
         } catch (e) { // try the old way
           try { // try the old way
-            data = JSON.parse(decodeURIComponent(theInput)) 
-          } catch (e) { // try with added )'s 
+            data = JSON.parse(decodeURIComponent(theInput))
+          } catch (e) { // try with added )'s
             try { data = JSURL.parse(theInput+")")} catch (e) {
               try { data = JSURL.parse(theInput+"))") } catch (e) {
                 try { data = JSURL.parse(theInput+")))") } catch (e) {
@@ -111,7 +141,7 @@ export default {
           var hydrating = Object.keys(data)[0]
           var compressedStr = JSON.stringify(data)
           if (compressedStr !== JSON.stringify(this.compressed)) {
-            this.set("compressed", JSON.parse(compressedStr))
+            this.compressed  = JSON.parse(compressedStr)
           }
           for (index in arrayOfKeys) {
             var key = arrayOfKeys[index]
@@ -136,22 +166,20 @@ export default {
           }
           if (!noSet) {
             if (JSON.stringify(theOutput) !== JSON.stringify(this.data)) {
-              this.set("done", false)
-              this.set("data", theOutput)
+              this.done = false
+              this.data = theOutput
             } else {
-              this.set("done", true)
-              this.fire("loaded")
+              this.done = true
             }
           }
           return theOutput
         } else {
           if (!noSet) {
             if (JSON.stringify(data) !== JSON.stringify(this.data)) {
-              this.set("done", false)
-              this.set("data", data)
+              this.done = false
+              this.data = data
             } else {
-              this.set("done", true)
-              this.fire("loaded")
+              this.done = true
             }
           }
           return data
@@ -159,24 +187,15 @@ export default {
       }
     },
     encode: function(theInput, size, cycles, simpleString) {
-      if (!this.compress) {
-        this.done = true
-        var theSting = JSURL.stringify(theInput)
-        if (theSting !== this.string) {
-          this.set("compressed", "not compressed")
-          this.set("string", theSting)
-        }
-        return theSting
-      } else if (!this.done && !this.string || JSON.stringify(theInput) != JSON.stringify(this.decode(this.string))) {
-        delete(this.compressed)
-        this.fire("compressing")
+      if (!this.done && !this.string || JSON.stringify(theInput) != JSON.stringify(this.decode(this.string))) {
+        this.$emit("compressing", true)
         if (cycles === undefined) {
           cycles = this.cycles
         }
         if (!size || typeof size !== 'number') { // to (data, data.*)
           simpleString = JSURL.stringify(theInput)
           size = simpleString.length
-          this._countUp = [0,0,0]
+          this.countUp = [0,0,0]
         }
         if (typeof theInput === "string") {
           var input = "" + theInput
@@ -190,9 +209,9 @@ export default {
             var output = {e:JSON.stringify(theInput),k:[]}
           }
         }
-        if (size < 50) { 
+        if (size < 50) {
           if (JSURL.stringify(theInput) !== this.string) {
-            this.set("string", JSURL.stringify(theInput))
+            this.string = JSURL.stringify(theInput)
           }
           return JSURL.stringify(theInput) // No need to reduce
         } else if (size > 5000){
@@ -204,18 +223,18 @@ export default {
         var maxstr = "" // our maximum length repeated string
         var maxSaving = 2
         var key = this.findAkey(input)
-        
+
         if (key) {
           var theKey = ""
           if (key.length === 3) {
-            theKey = key  
+            theKey = key
           } else if (key.length === 2) {
-            theKey = key + "e"  
+            theKey = key + "e"
           } else if (key.length === 1) {
-            theKey = key + "ee" 
+            theKey = key + "ee"
           }
           var smallSavingTestLimit = +this.trys
-        
+
           reg.lastIndex = 0
           var sizeOfSlice = Math.floor(input.length / this.cycles / 2) + 50
           if (input.length > sizeOfSlice) {
@@ -246,40 +265,40 @@ export default {
           }
           if (maxstr) {
             output.e = input.split(maxstr).join(key)
-            
+
             if (key.length === 3) {
-              theKey = key + maxstr 
+              theKey = key + maxstr
             } else if (key.length === 2) {
-              theKey = key + "e" + maxstr 
+              theKey = key + "e" + maxstr
             } else if (key.length === 1 && (maxstr.length === 1 || maxstr.length === 2)) {
               theKey = key + maxstr
             } else if (key.length === 1) {
               theKey = key + "ee" + maxstr
-            } 
+            }
             output.k.unshift(theKey)
             if (this.log) {console.log("Saving", maxSaving)}
           } else {
             if (this.log) {console.log("out savings")}
-          }  
+          }
         } else {
           if (this.log) {console.log("out of keys")}
-        } 
+        }
         if (JSURL.stringify(output).length + 2 < JSURL.stringify(theInput).length || cycles > 0) {
-          this.fire("cycles-left", cycles)
+          this.$emit("cycles-left", cycles)
           return this.encode(output, size, cycles-1, simpleString)
         } else {
           this.done = true
           outputObj = {}
           outputObj[output.e] = output.k
-          var outputLength = JSURL.stringify(outputObj).length 
+          var outputLength = JSURL.stringify(outputObj).length
           outputObj = {}
           outputObj[output.e] = output.k
           this.totalSaving = size - outputLength
-          this.fire("compressed")
+          this.$emit("compressing", false)
           if (this.totalSaving > 0) {
             if (JSURL.stringify(outputObj) !== this.string) {
-              this.set("compressed", outputObj)
-              this.set("string", JSURL.stringify(outputObj))
+              this.compressed = outputObj
+              this.string = JSURL.stringify(outputObj)
             }
             return JSURL.stringify(outputObj)
           } else {
