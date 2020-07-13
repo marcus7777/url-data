@@ -1,27 +1,22 @@
-<link rel="import" href="../polymer/polymer.html">
-<script src="../jsurl/lib/jsurl.js" type="application/javascript"></script>
-<script>
-/*
- * `<url-data></url-data>` A way to send data through URL automatically eliminating repeating data
- * @demo demo.html
- */
-  Polymer({
-    is: "url-data",
+import JSURL from "jsurl"
+export default {
     properties: {
       data: {notify: true},
-      __runDebounceData: {computed: "updateData(debounceData.*)"},
       string: {notify: true, type: String},
       compressed: {notify: true, type: Object},
+      dataFromString: {notify:true, computed: "decode(string)"},
+      stringFromData: {notify:true, computed: "encode(data)"}
+
+      __runDebounceData: {computed: "updateData(debounceData.*)"},
+      _chrList: {computed: "getChrList(letters,numbers)"},
+      _tryKeys: {computed: "getTryKeys(_chrList)"},
+      
       compress: {type:Boolean, value: false},
       letters: {type:String, value: "etaoinshrdcumwfgypbvkjxqz"},
       numbers: {type:String, value: "0123456789."},
       cycles: {type:Number, value: 32},
       trys: {type:Number, value: 100},
       _countUp: {type:Array, value: [0,0,0]},
-      _chrList: {computed: "getChrList(letters,numbers)"},
-      _tryKeys: {computed: "getTryKeys(_chrList)"},
-      dataFromString: {notify:true, computed: "decode(string)"},
-      stringFromData: {notify:true, computed: "encode(data)"}
     },
     updateData: function(data){
       this.debounce("setData", this.setData, 2200)
@@ -292,5 +287,4 @@
         }
       }
     }
-  })
-</script>
+  }
