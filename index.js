@@ -1,5 +1,5 @@
 import JSURL from "jsurl"
-export default function (thisData, thisString, thisCycles = 32, thisTrys = 100, thisLetters = "etaoinshrdcumwfgypbvkjxqz",
+export default function (thisData, thisString, thisCycles = 320, thisTrys = 9000, thisLetters = "etaoinshrdcumwfgypbvkjxqz",
   thisNumbers = "0123456789."){
   this.data = thisData
   this.string = thisString
@@ -9,7 +9,8 @@ export default function (thisData, thisString, thisCycles = 32, thisTrys = 100, 
   this.numbers = thisNumbers
   this.countUp = [0,0,0] 
   this.compressed = {}
-  this.log = false
+  this.log = true // false
+  this.goodStrings = []
   
   this.getTryKeys = (chrList) => {
     return chrList.replace("e","").split("").reverse()
@@ -206,13 +207,12 @@ export default function (thisData, thisString, thisCycles = 32, thisTrys = 100, 
         var smallSavingTestLimit = +this.trys
 
         reg.lastIndex = 0
-        var sizeOfSlice = Math.floor(input.length / this.cycles / 2) + 50
+        var sizeOfSlice = Math.floor(input.length / this.cycles) + 150
 		
         let testSlice = input
-        let startSlice
         if (input.length > sizeOfSlice) {
-          startSlice = Math.floor((input.length - sizeOfSlice) * (cycles / this.cycles))
-          testSlice = input.slice(startSlice, startSlice + sizeOfSlice)
+          let startSlice = Math.random()*(input.length - sizeOfSlice)
+	  testSlice = input.slice(startSlice, startSlice + sizeOfSlice)
         }
         var inputSize = JSURL.stringify(input).length
         sub = reg.exec(testSlice) // find the first repeated string
@@ -247,6 +247,7 @@ export default function (thisData, thisString, thisCycles = 32, thisTrys = 100, 
             theKey = key + "ee" + maxstr
           }
           output.k.unshift(theKey)
+          this.goodStrings.push(theKey)
           if (this.log) {console.log("Saving", maxSaving)}
         } else {
           if (this.log) {console.log("out savings")}
@@ -259,12 +260,15 @@ export default function (thisData, thisString, thisCycles = 32, thisTrys = 100, 
         return this.encode(output, size, cycles-1, simpleString)
       } else {
         this.done = true
-        outputObj = {}
+        let outputObj = {}
         outputObj[output.e] = output.k
         var outputLength = JSURL.stringify(outputObj).length
-        outputObj = {}
-        outputObj[output.e] = output.k
         this.totalSaving = size - outputLength
+	if (this.log) {
+	  console.log("totalSaving", this.totalSaving, size, outputLength, outputLength/size)
+	  console.log("outputObj values", Object.values(outputObj), Object.values(outputObj).length)
+          console.log(this.goodStrings)
+	}
         //this.$emit("compressing", false)
         if (this.totalSaving > 0) {
           if (JSURL.stringify(outputObj) !== this.string) {
