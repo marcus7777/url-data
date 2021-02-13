@@ -1,7 +1,7 @@
 {
   "name": "url-data",
   "version": "1.0.2",
-  "description": "A way to send data through URL automatically eliminating repeating data",
+  "description": "A way to send data through URL automatically eliminating repeating data.",
   "main": "index.js",
   "keywords": [
     "web-components"
