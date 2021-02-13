@@ -1,5 +1,5 @@
 {
-  "name": "url-data",
+  "name": "smallerjs",
   "version": "1.0.2",
   "description": "A way to send data through URL automatically eliminating repeating data.",
   "main": "index.js",
