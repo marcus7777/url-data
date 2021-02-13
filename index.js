@@ -8,7 +8,7 @@ export default function (thisData, thisString, thisCycles = 32, thisTrys = 100, 
   this.letters = thisLetters
   this.numbers = thisNumbers
   this.countUp = [0,0,0] 
-  this.compressed = []
+  this.compressed = {}
   this.log = false
   
   this.getTryKeys = (chrList) => {
