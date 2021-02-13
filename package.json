@@ -1,8 +1,8 @@
 {
-  "name": "v-url-data",
-  "version": "1.0.1",
+  "name": "url-data",
+  "version": "1.0.2",
   "description": "A way to send data through URL automatically eliminating repeating data",
-  "main": "url-data.js",
+  "main": "index.js",
   "keywords": [
     "web-components"
   ],
