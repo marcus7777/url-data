@@ -163,7 +163,7 @@ export default function (thisData, thisString, thisCycles = 32, thisTrys = 100, 
       }
     }
   }
-  this.encode(theInput, size, cycles = this.cycles, simpleString) => {
+  this.encode = (theInput, size, cycles = this.cycles, simpleString) => {
     if (!this.done && !this.string || JSON.stringify(theInput) != JSON.stringify(this.decode(this.string))) {
       //this.$emit("compressing", true)
       if (!size || typeof size !== 'number') { // to (data, data.*)
