@@ -44,51 +44,51 @@ export default function (thisData, thisString, thisCycles = 32, thisTrys = 100, 
         return _tryKeys[this.countUp[2]]
       }
     }
-      this.countUp[2] = 0
+    this.countUp[2] = 0
+    for (; this.countUp[2] < _tryKeys.length; this.countUp[2]++) {
+      if (text.indexOf("E" + _tryKeys[this.countUp[2]]) === -1) {
+        return "E" + _tryKeys[this.countUp[2]]
+      }
+      if (text.indexOf("e" + _tryKeys[this.countUp[2]]) === -1) {
+        return "e" + _tryKeys[this.countUp[2]]
+      }
+    }
+    this.countUp[2] = 0
+    for (; this.countUp[1] < _tryKeys.length; this.countUp[1]++) {
       for (; this.countUp[2] < _tryKeys.length; this.countUp[2]++) {
-        if (text.indexOf("E" + _tryKeys[this.countUp[2]]) === -1) {
-          return "E" + _tryKeys[this.countUp[2]]
-        }
-        if (text.indexOf("e" + _tryKeys[this.countUp[2]]) === -1) {
-          return "e" + _tryKeys[this.countUp[2]]
+        if (text.indexOf(_tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]) === -1) {
+          return _tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]
         }
       }
       this.countUp[2] = 0
-      for (; this.countUp[1] < _tryKeys.length; this.countUp[1]++) {
-        for (; this.countUp[2] < _tryKeys.length; this.countUp[2]++) {
-          if (text.indexOf(_tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]) === -1) {
-            return _tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]
-          }
+    }
+    this.countUp[1] = 0
+    for (; this.countUp[1] < _tryKeys.length; this.countUp[1]++) {
+      for (; this.countUp[2] < _tryKeys.length; this.countUp[2]++) {
+        if (text.indexOf("e"+_tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]) === -1) {
+          return "e"+_tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]
         }
-        this.countUp[2] = 0
-      }
-      this.countUp[1] = 0
-      for (; this.countUp[1] < _tryKeys.length; this.countUp[1]++) {
-        for (; this.countUp[2] < _tryKeys.length; this.countUp[2]++) {
-          if (text.indexOf("e"+_tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]) === -1) {
-            return "e"+_tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]
-          }
-          if (text.indexOf(_tryKeys[this.countUp[1]] + "e" + _tryKeys[this.countUp[2]]) === -1) {
-            return _tryKeys[this.countUp[1]] + "e" + _tryKeys[this.countUp[2]]
-          }
+        if (text.indexOf(_tryKeys[this.countUp[1]] + "e" + _tryKeys[this.countUp[2]]) === -1) {
+          return _tryKeys[this.countUp[1]] + "e" + _tryKeys[this.countUp[2]]
         }
-        this.countUp[2] = 0
       }
-      this.countUp[1] = 0
+      this.countUp[2] = 0
+    }
+    this.countUp[1] = 0
 
-      for (; this.countUp[0] < _tryKeys.length; this.countUp[0]++) {
-        for (; this.countUp[1] < _tryKeys.length; this.countUp[1]++) {
-          for (; this.countUp[2] < _tryKeys.length; this.countUp[2]++) {
-            if (text.indexOf(_tryKeys[this.countUp[0]] + _tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]) === -1) {
-              return _tryKeys[this.countUp[0]] + _tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]
-            }
+    for (; this.countUp[0] < _tryKeys.length; this.countUp[0]++) {
+      for (; this.countUp[1] < _tryKeys.length; this.countUp[1]++) {
+        for (; this.countUp[2] < _tryKeys.length; this.countUp[2]++) {
+          if (text.indexOf(_tryKeys[this.countUp[0]] + _tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]) === -1) {
+            return _tryKeys[this.countUp[0]] + _tryKeys[this.countUp[1]] + _tryKeys[this.countUp[2]]
           }
-          this.countUp[2] = 0
         }
-        this.countUp[1] = 0
+        this.countUp[2] = 0
       }
-      this.countUp[0] = 0
-      return false
+      this.countUp[1] = 0
+    }
+    this.countUp[0] = 0
+    return false
   }
   this.decode = (theInput, noSet) => {
     if (theInput) {
