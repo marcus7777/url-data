@@ -1,4 +1,4 @@
-# url-data
+# smaller js
 A way to send data through URL automatically eliminating repeating data.
 ```js
         import smallerjs from "smallerjs"
