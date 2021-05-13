@@ -1,10 +1,9 @@
 import JSURL from "jsurl"
-export default function (thisData, thisString, thisCompressed, thisCycles = 320, thisTrys = 9000, thisLetters = "etaoinshrdcumwfgypbvkjxqz",
-  thisNumbers = "0123456789."){
+export default function (thisData, thisString, thisCompressed, thisCycles = 320, thisTrys = 9000, 
+  thisLetters = "etaoinshrdcumwfgypbvkjxqz", thisNumbers = "0123456789.", log = false){
   let countUp = [0,0,0] 
   let compressed = {}
-  const log = true // false
-  let goodStrings = []
+  let goodStrings = [] // TODO start checking
   let thisDone = false 
   const getTryKeys = (chrList) => {
     return chrList.replace("e","").split("").reverse()
