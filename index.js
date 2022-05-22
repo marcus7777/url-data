@@ -91,7 +91,7 @@ const findAkey = (text) => {
     countUp[0] = 0
     return false
 }
-export default const decode = (theInput, noSet) => {
+export const decode = (theInput, noSet) => {
     if (theInput) {
         var theOutput
         var data
@@ -284,3 +284,4 @@ export const encode = (theInput, size, cycles = thisCycles, simpleString) => {
         return thisString
     }
 }
+export default {encode, decode}
