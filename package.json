@@ -1,6 +1,6 @@
 {
   "name": "smallerjs",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "description": "A way to send data through URL automatically eliminating repeating data.",
   "main": "index.js",
   "keywords": [
