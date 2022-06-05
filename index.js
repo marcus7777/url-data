@@ -272,7 +272,7 @@ export const encode = (theInput, size, cycles = thisCycles, simpleString) => {
             //this.$emit("compressing", false)
             if (thisTotalSaving > 0) {
                 if (JSURL.stringify(outputObj) !== thisString) {
-                    thisCompressed = outputObj
+    //                thisCompressed = outputObj
                     thisString = JSURL.stringify(outputObj)
                 }
                 return JSURL.stringify(outputObj)
